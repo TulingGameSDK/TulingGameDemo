@@ -277,7 +277,7 @@ typedef NS_ENUM(NSInteger, ButtonType){
 
 -(void)showLoginViewNotification:(NSNotification *)notification{
     //显示登录框
-    [self setupLoginView];
+    [self setupSDKLoginView];
 }
 
 
@@ -289,7 +289,7 @@ typedef NS_ENUM(NSInteger, ButtonType){
 
 
 #pragma mark -- 显示登录框
--(void)setupLoginView{
+-(void)setupSDKLoginView{
     /**
      TulinggameSDK初始化，
      游戏RootVC调用，必须使用强引用
@@ -328,8 +328,30 @@ typedef NS_ENUM(NSInteger, ButtonType){
     };
 }
 
+#pragma mark -- 判断SDK支付方式
+-(void)requestSDKPaymenyType{
+    //首先要调用SDK的支付控制方法，获取支付方式【苹果内购 or 第三方】
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    
+    [[TulingGameSDKHelper sharedInstance] tlg_requestPaymentModelTypeWithGameVersion:appVersion block:^(TLGPaymentModeType type) {
+        
+        if (type == TLGPaymentModeType_AppleIAP) {
+            //苹果内购
+            NSLog(@"\n\nTulingGameDemo-requestSDKPaymenyType-SDK返回的支付方式是：苹果内购\n\n");
+
+        }else if (type == TLGPaymentModeType_Threeparty){
+            //调起第三方
+            NSLog(@"\n\nTulingGameDemo-requestSDKPaymenyType-SDK返回的支付方式是：第三方\n\n");
+
+            [self setupSDKPaymentView];
+
+        }else{}
+        
+    }];
+}
+
 #pragma mark -- 显示支付框
--(void)setupPaymentView{
+-(void)setupSDKPaymentView{
     /**
      TulinggameSDK 支付初始化，
      游戏RootVC调用，必须使用强引用
@@ -353,23 +375,22 @@ typedef NS_ENUM(NSInteger, ButtonType){
             }
 
             //登录框
-            [self setupLoginView];
+            [self setupSDKLoginView];
             
-//            [[TulingGameSDKHelper sharedInstance] printLog];
 
         }break;
             
         case ButtonType_ChangeAccount:
         {
             //登录框
-            [self setupLoginView];
+            [self setupSDKLoginView];
 
         }break;
             
         case ButtonType_Payment:
         {
             //支付
-            [self setupPaymentView];
+            [self requestSDKPaymenyType];
             
         }break;
             

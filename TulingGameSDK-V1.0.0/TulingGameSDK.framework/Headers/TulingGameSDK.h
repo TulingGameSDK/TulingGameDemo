@@ -2,13 +2,32 @@
 //  TulingGameSDK.h
 //  TulingGameSDK
 //
-//  Created by Nero on 29/9/2018.
+//  Created by Nero on 10/10/2018.
 //  Copyright © 2018 TulingGame. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-//test:version - 1.0.0.1
+
+
+/*
+ ************************************************************
+ 
+ #当前SDK版本：V1.0.0
+ 
+ 
+ #版本更新记录
+ V1.0.0
+ 1.登录、支付、用户中心基本功能
+ 
+ 
+ ************************************************************
+*/
+
+
+
+
+
 
 //! Project version number for TulingGameSDK.
 FOUNDATION_EXPORT double TulingGameSDKVersionNumber;

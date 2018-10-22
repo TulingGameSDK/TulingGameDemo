@@ -19,8 +19,21 @@ typedef NS_ENUM(NSInteger,TLGGameRoleEventType){
     TLGGameRoleEventType_UpgradeRoleLevel     = 2         // 角色升级
 };
 
+/*! @brief 支付方式
+ *
+ */
+typedef NS_ENUM(NSInteger,TLGPaymentModeType){
+    TLGPaymentModeType_AppleIAP         = 0,       // 苹果内购
+    TLGPaymentModeType_Threeparty       = 1       //  第三方
+};
+
+
 //是否成功登出
 typedef void(^TLGLogoutStatusBlock)(BOOL isSuccessLogout);
+
+//支付方式
+typedef void(^TLGPaymentModeTypeBlock)(TLGPaymentModeType type);
+
 
 @interface TulingGameSDKHelper : NSObject
 
@@ -65,11 +78,6 @@ typedef void(^TLGLogoutStatusBlock)(BOOL isSuccessLogout);
 -(void)tlg_dataInitializationWithGameJson:(NSString *)gameJson;
 
 
-/*! @brief 激活上报【成功进入游戏后调用】
- *
- */
--(void)tlg_reportGameActivate;
-
 /*! @brief 创建角色上报【创建角色成功后调用】
  *
  * param serverId;              //【NSString】区服id
@@ -90,10 +98,15 @@ typedef void(^TLGLogoutStatusBlock)(BOOL isSuccessLogout);
  */
 -(void)tlg_reportGameLogoutWithBlock:(TLGLogoutStatusBlock)block;
 
-/*! @brief 屏幕旋转，同步更新悬浮按钮位置
+/*! @brief 支付方式，由SDK控制返回【第三方支付 or 苹果内购】
  *
+ * param gameVersion;              //游戏客户端版本
  */
--(void)updateDragBtnFrame;
+-(void)tlg_requestPaymentModelTypeWithGameVersion:(NSString *)gameVersion block:(TLGPaymentModeTypeBlock)block;
+
+
+
+
 
 @end
 
