@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 /*! @brief 角色上报类型
  *
  */
@@ -28,8 +26,21 @@ typedef NS_ENUM(NSInteger,TLGPaymentModeType){
 };
 
 
+//对接游戏，登录的状态回调
+typedef void(^TLGLoginStatusBlcok)(BOOL isSuccess,id errorMsg,NSString *userId, NSString *token);
+
+
 //是否成功登出
 typedef void(^TLGLogoutStatusBlock)(BOOL isSuccessLogout);
+
+/*! @brief 订单是否支付成功（三方+苹果内购）
+ *
+ * @param isSuccess 是否支付成功
+ * @param errorMsg  错误信息，如果是成功，错误信息为nil
+ * @param gameOrderID 支付成功，会附带游戏的订单号,失败返回nil
+ */
+typedef void(^TLGPaymentStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameOrderID);
+
 
 //支付方式
 typedef void(^TLGPaymentModeTypeBlock)(TLGPaymentModeType type);
@@ -58,15 +69,8 @@ typedef void(^TLGPaymentModeTypeBlock)(TLGPaymentModeType type);
  */
 + (instancetype)sharedInstance;
 
-/*! @brief 处理通过URL启动App时传递的数据[微信、支付宝支付状态回调]
- *
- * 需要在 application:openURL:sourceApplication:annotation:或者application:handleOpenURL中调用。
- * @param url 微信启动第三方应用时传递过来的URL
- * @return 成功返回YES，失败返回NO。
- */
-+(BOOL)tlg_handleOpenURL:(NSURL *) url;
 
-
+/** 登录初始化 **/
 /*! @brief 游戏传参（5个组成组成参数，需要NSDictionary转成一条json string传给SDK）
  *  SDK数据初始化【必须调用，只需调用一次】
  * param gameID       【NSInteger-游戏ID】
@@ -75,7 +79,8 @@ typedef void(^TLGPaymentModeTypeBlock)(TLGPaymentModeType type);
  * param gameVersion  【NSString-游戏版本】
  * param gameKey      【NSString-给游戏分配的KEY】
  */
--(void)tlg_dataInitializationWithGameJson:(NSString *)gameJson;
+-(void)tlg_requestLoginWithGameInitJson:(NSString *)GameInitJson block:(TLGLoginStatusBlcok)block;
+
 
 
 /*! @brief 创建角色上报【创建角色成功后调用】
@@ -98,16 +103,46 @@ typedef void(^TLGPaymentModeTypeBlock)(TLGPaymentModeType type);
  */
 -(void)tlg_reportGameLogoutWithBlock:(TLGLogoutStatusBlock)block;
 
-/*! @brief 支付方式，由SDK控制返回【第三方支付 or 苹果内购】
+/** 【必传】游戏支付相关参数 **/
+/*   生成订单接口【请注意上传的字段格式】
  *
- * param gameVersion;              //游戏客户端版本
+ * param gameVersion;           //【NSString】游戏当前的版本号
+ * param amount;                //【NSInteger】充值金额，单位：分,必传
+ * param orderId;               //【NSString】研发传入的订单号，必传
+ * param roleId;                //【NSString】玩家角色id，必传
+ * param roleName;              //【NSString】玩家角色名，必传
+ * param roleLevel;             //【NSString】角色等级，必传
+ * param serverId;              //【NSString】区服id，必传
+ * param serverName;            //【NSString】区服名字，必传
+ * param productId;             //【NSString】商品ID，必传
+ * param productName;           //【NSString】商品名，商品名称前请不要添加任何量词。如钻石，月卡即可。必传
+ * param payInfo;               //【NSString】商品描述信息，必传
+ * param productCount;          //【NSString】购买的商品数量，必传
+ * param notifyUrl;             //【NSString】支付结果回调地址，必传
+ * param extraData;             //【NSString】透传参数，字符串，可选
  */
--(void)tlg_requestPaymentModelTypeWithGameVersion:(NSString *)gameVersion block:(TLGPaymentModeTypeBlock)block;
+/*! @brief 支付操作(SDK根据游戏的版本号，出不同的支付操作)
+ *
+ * param gameVersion;          //游戏客户端版本
+ * param block;               //返回成功或者失败
+ */
+-(void)tlg_requestPaymentWithGameValueJson:(NSString *)gameValueJson block:(TLGPaymentStatusBlock)block;
 
+/*! @brief 处理通过URL启动App时传递的数据[微信、支付宝支付状态回调]
+ *
+ * 需要在 application:openURL:sourceApplication:annotation:或者application:handleOpenURL中调用。
+ * @param url 微信启动第三方应用时传递过来的URL
+ * @return 成功返回YES，失败返回NO。
+ */
+-(BOOL)tlg_handleOpenURL:(NSURL *) url;
+
+/*! @brief 处理内购丢单问题，SDK每次进入界面，会查询本地近路的内购凭证，验证后，清空本地记录的全部内购凭证
+ *
+ */
+-(void)tlg_handleIAPUnfinishOrderWithBlock:(TLGPaymentStatusBlock)block;
 
 
 
 
 @end
 
-NS_ASSUME_NONNULL_END

@@ -28,6 +28,11 @@
     UINavigationController *NC = [[UINavigationController alloc] initWithRootViewController:VC];
     self.window.rootViewController = NC;
     
+    
+    //处理未经过SDK服务器验证的【苹果内购凭证】
+    //    [self handleIAPUnfinishOrder];
+
+    
     return YES;
 }
 
@@ -51,6 +56,10 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+    //处理未经过SDK服务器验证的【苹果内购凭证】
+//    [self handleIAPUnfinishOrder];
+    
 }
 
 
@@ -59,14 +68,23 @@
 }
 
 
-#pragma mark -- 微信\支付宝回调
+#pragma mark -- 微信\支付宝 APP回调
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    return  [TulingGameSDKHelper tlg_handleOpenURL:url] ;
+    return [[TulingGameSDKHelper sharedInstance] tlg_handleOpenURL:url];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    return [TulingGameSDKHelper tlg_handleOpenURL:url];
+    return [[TulingGameSDKHelper sharedInstance] tlg_handleOpenURL:url];
 }
+#pragma mark -- 处理【苹果内购】丢单问题
+-(void)handleIAPUnfinishOrder{
+    [[TulingGameSDKHelper sharedInstance] tlg_handleIAPUnfinishOrderWithBlock:^(BOOL isSuccess, id errorMsg, NSString *gameOrderID) {
+        //支付结果(苹果内购)
+        NSLog(@"\n\n【图灵SDK苹果内购防丢单回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\nsdkOrderID:%@\n\n",isSuccess,errorMsg,gameOrderID);
+        
+    }];
+}
+
 
 
 @end

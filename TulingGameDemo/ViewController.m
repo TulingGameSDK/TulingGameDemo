@@ -12,15 +12,21 @@
 static const CGFloat kButtonWidth                              = 200.0;
 static const CGFloat kButtonHeigh                              = 35.0;
 static const CGFloat kButtonPadding                            = 13.0;
-static const CGFloat kTotalBtnNum                              = 3;
+static const CGFloat kTotalBtnNum                              = 4;
 
 
 typedef NS_ENUM(NSInteger, ButtonType){
     ButtonType_ChangeAccount  = 0,    // 切换账号
-    ButtonType_Payment        = 1,    // 支付
-    ButtonType_Logout         = 2,     // 退出游戏
-    ButtonType_Login          = 3,    // 登录
+    ButtonType_Payment        = 1,    // 支付（SDK自身判断三方还是苹果内购）
+    ButtonType_Payment_IAP    = 2,    // 支付（SDK自身判断三方还是苹果内购）
+    ButtonType_Logout         = 3,     // 退出游戏
+    ButtonType_Login          = 4,    // 登录
 
+};
+
+typedef NS_ENUM(NSInteger, PaymentTestType){
+    PaymentTestType_Threeparty  = 0,    // 三方
+    PaymentTestType_IAP         = 1,    // 内购
 };
 
 
@@ -30,8 +36,7 @@ typedef NS_ENUM(NSInteger, ButtonType){
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 
 
-@property (nonatomic, strong) TLGLoginVC *loginVC;
-@property (nonatomic, strong) TLGPaymentVC *paymentVC;
+
 @end
 
 @implementation ViewController
@@ -124,6 +129,10 @@ typedef NS_ENUM(NSInteger, ButtonType){
         {
             return @"支付";
         }break;
+        case ButtonType_Payment_IAP:
+        {
+            return @"苹果内购（仅供测试）";
+        }break;
         case ButtonType_Logout:
         {
             return @"退出游戏";
@@ -202,10 +211,11 @@ typedef NS_ENUM(NSInteger, ButtonType){
 
 
 #pragma mark -- 游戏预订单生成，传参
--(NSString *)gamePaymentOrderValueJaosnString{
+-(NSString *)gamePaymentOrderValueJaosnStringWithType:(PaymentTestType)type{
     
     /*! @brief 生成订单接口【请注意上传的字段格式】
      *
+     * param gameVersion;           //【NSString】游戏当前的版本号（SDK会根据版本号，做开关控制）
      * param amount;                //【NSInteger】充值金额，单位：分,必传
      * param orderId;               //【NSString】研发传入的订单号，必传
      * param roleId;                //【NSString】玩家角色id，必传
@@ -213,7 +223,7 @@ typedef NS_ENUM(NSInteger, ButtonType){
      * param roleLevel;             //【NSString】角色等级，必传
      * param serverId;              //【NSString】区服id，必传
      * param serverName;            //【NSString】区服名字，必传
-     * param productId;             //【NSString】商品ID，必传
+     * param productId;             //【NSString】商品ID，必传,bundleID对应的苹果内购的商品ID，例如：com.TulingGame.SDKDemo.pay6
      * param productName;           //【NSString】商品名，商品名称前请不要添加任何量词。如钻石，月卡即可。必传
      * param payInfo;               //【NSString】商品描述信息，必传
      * param productCount;          //【NSString】购买的商品数量，必传
@@ -221,7 +231,20 @@ typedef NS_ENUM(NSInteger, ButtonType){
      * param extraData;             //【NSString】透传参数，字符串，可选
      */
 
+
+    //（SDK会根据版本号，做开关控制）
+    //此处只是为了方便展示功能&测试，所以做了type操作判断，实际出包，请直接用【[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]】设置游戏版本号
+    NSString *appVersion = @"";
+    
+    if (type == PaymentTestType_Threeparty) {
+        appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        
+    }else{
+        appVersion = @"2.0.0";
+    }
+
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:
+                         appVersion,@"gameVersion",
                          @(1),@"amount",
                          @"2018101034t445675767",@"orderId",
                          @"3456",@"roleId",
@@ -229,7 +252,7 @@ typedef NS_ENUM(NSInteger, ButtonType){
                          @"10",@"roleLevel",
                          @"3",@"serverId",
                          @"魔兽世界-中国服",@"serverName",
-                         @"1",@"productId",
+                         @"com.TulingGame.SDKDemo.pay6",@"productId",
                          @"游戏钻石",@"productName",
                          @"充值100金币-10元",@"payInfo",
                          @"1",@"productCount",
@@ -290,28 +313,25 @@ typedef NS_ENUM(NSInteger, ButtonType){
 
 #pragma mark -- 显示登录框
 -(void)setupSDKLoginView{
-    /**
-     TulinggameSDK初始化，
-     游戏RootVC调用，必须使用强引用
-     **/
-    TLGLoginVC *loginVC = [TLGLoginVC new];
-    self.loginVC = loginVC;//必须强引用
-    [loginVC tlg_addViewToFront];
     
-    //是否成功登录（登录状态回调）
-    loginVC.tlg_loginVCLoginStatusBlock = ^(BOOL isSuccessLogin,NSString *userId,NSString *token) {
+    [[TulingGameSDKHelper sharedInstance] tlg_requestLoginWithGameInitJson:[self gameInitializationValueJaosnString] block:^(BOOL isSuccess, id errorMsg, NSString *userId, NSString *token) {
         
-        [self updateUIWithLoginStatus:isSuccessLogin];
+        NSLog(@"\n\n【图灵SDK登录回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\nuserId:%@\ntoken:%@\n\n",isSuccess,errorMsg,userId,token);
         
-        //回调信息【userId、token】
-        if (isSuccessLogin) {
+        if (isSuccess) {
+            
             NSLog(@"\n\n\n\nTulingGameDemo-Block回调-登录成功");
             NSLog(@"\n\n登录成功-Block回调数据\nuserId：%@\ntoken:%@",userId,token);
             
             //单例读取SDK本地的userid、token方法
             if ([TulingGameSDKHelper sharedInstance].isLogin) {
-                NSLog(@"\n\n登录成功-SDK本地存储数据\nuserId：%@\ntoken:%@",[TulingGameSDKHelper sharedInstance].userId,[TulingGameSDKHelper sharedInstance].token);
+                NSLog(@"\n\n登录成功-SDK本地存储数据读取方法\nuserId：%@\ntoken:%@",[TulingGameSDKHelper sharedInstance].userId,[TulingGameSDKHelper sharedInstance].token);
             }
+            
+            
+            //更新UI显示
+            [self updateUIWithLoginStatus:isSuccess];
+            
             
             //【进入服务器、创建角色、角色升级】3种情况，需要进行角色上报API调用
             /*! @brief 角色上报类型
@@ -322,57 +342,39 @@ typedef NS_ENUM(NSInteger, ButtonType){
             [[TulingGameSDKHelper sharedInstance] tlg_reportGameRoleWithJsonString:[self gameRoleValueJaosnString] eventType:TLGGameRoleEventType_EneterServer];
             
         }else{
-            NSLog(@"TulingGameDemo-Block回调-登录失败");
+            
         }
         
-    };
+    }];
+
 }
 
-#pragma mark -- 判断SDK支付方式
--(void)requestSDKPaymenyType{
-    //首先要调用SDK的支付控制方法，获取支付方式【苹果内购 or 第三方】
-    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+#pragma mark -- 调用支付操作
+//SDK本身会根据游戏的版本号，做后台开关，控制支付方式
+//此处type只为方便展示&测试内容，（SDKDemo本身app version设置了1.0.0是走三方，如果设置了2.0.0就走内购）
+-(void)setupSDKPaymentViewWithType:(PaymentTestType)type{
+
+    //游戏需要组装参数，向SDK传支付相关的参数
+    NSString *gameValueJson = [self gamePaymentOrderValueJaosnStringWithType:type];
     
-    [[TulingGameSDKHelper sharedInstance] tlg_requestPaymentModelTypeWithGameVersion:appVersion block:^(TLGPaymentModeType type) {
+    [[TulingGameSDKHelper sharedInstance] tlg_requestPaymentWithGameValueJson:gameValueJson block:^(BOOL isSuccess,id errorMsg, NSString *sdkOrderID) {
         
-        if (type == TLGPaymentModeType_AppleIAP) {
-            //苹果内购
-            NSLog(@"\n\nTulingGameDemo-requestSDKPaymenyType-SDK返回的支付方式是：苹果内购\n\n");
-
-        }else if (type == TLGPaymentModeType_Threeparty){
-            //调起第三方
-            NSLog(@"\n\nTulingGameDemo-requestSDKPaymenyType-SDK返回的支付方式是：第三方\n\n");
-
-            [self setupSDKPaymentView];
-
-        }else{}
+        //支付结果(三方 + 苹果内购)
+        NSLog(@"\n\n【图灵SDK支付回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\nsdkOrderID:%@\n\n",isSuccess,errorMsg,sdkOrderID);
         
     }];
 }
 
-#pragma mark -- 显示支付框
--(void)setupSDKPaymentView{
-    /**
-     TulinggameSDK 支付初始化，
-     游戏RootVC调用，必须使用强引用
-     **/
-    TLGPaymentVC *paymentVC = [TLGPaymentVC new];
-    self.paymentVC = paymentVC;//必须强引用
-    paymentVC.gameValueJson = [self gamePaymentOrderValueJaosnString];//向SDK传支付相关的参数
-    [paymentVC tlg_addViewToFront];
-    
-}
-
-#pragma mark -- 点击事件
+#pragma mark -- SDKDemo点击事件
 -(void)btnAction:(UIButton *)btn{
     
     switch (btn.tag) {
         case ButtonType_Login:
         {
-            //【SDK初始化-必须调用，只需调用一次】
-            if (![TulingGameSDKHelper sharedInstance].isInitializationValid) {
-                [[TulingGameSDKHelper sharedInstance] tlg_dataInitializationWithGameJson:[self gameInitializationValueJaosnString]];
-            }
+//            //【SDK初始化-必须调用，只需调用一次】
+//            if (![TulingGameSDKHelper sharedInstance].isInitializationValid) {
+//                [[TulingGameSDKHelper sharedInstance] tlg_dataInitializationWithGameJson:[self gameInitializationValueJaosnString]];
+//            }
 
             //登录框
             [self setupSDKLoginView];
@@ -390,8 +392,15 @@ typedef NS_ENUM(NSInteger, ButtonType){
         case ButtonType_Payment:
         {
             //支付
-            [self requestSDKPaymenyType];
+            [self setupSDKPaymentViewWithType:PaymentTestType_Threeparty];
             
+        }break;
+            
+        case ButtonType_Payment_IAP:
+        {
+            //内购，用于展示【内购】测试功能，实际不接入这个方法
+            [self setupSDKPaymentViewWithType:PaymentTestType_IAP];
+
         }break;
             
         case ButtonType_Logout:
@@ -411,6 +420,7 @@ typedef NS_ENUM(NSInteger, ButtonType){
             break;
     }
 }
+
 
 
 #pragma mark -- 控制界面方向(demo展示，游戏实际不需要接入这部分UI旋转控制)
