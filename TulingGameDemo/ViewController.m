@@ -357,10 +357,10 @@ typedef NS_ENUM(NSInteger, PaymentTestType){
     //游戏需要组装参数，向SDK传支付相关的参数
     NSString *gameValueJson = [self gamePaymentOrderValueJaosnStringWithType:type];
     
-    [[TulingGameSDKHelper sharedInstance] tlg_requestPaymentWithGameValueJson:gameValueJson block:^(BOOL isSuccess,id errorMsg, NSString *sdkOrderID) {
+    [[TulingGameSDKHelper sharedInstance] tlg_requestPaymentWithGameValueJson:gameValueJson block:^(BOOL isSuccess,id errorMsg, NSString *gameOrderID) {
         
         //支付结果(三方 + 苹果内购)
-        NSLog(@"\n\n【图灵SDK支付回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\nsdkOrderID:%@\n\n",isSuccess,errorMsg,sdkOrderID);
+        NSLog(@"\n\n【图灵SDK支付回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\ngameOrderID:%@\n\n",isSuccess,errorMsg,gameOrderID);
         
     }];
 }
@@ -371,10 +371,6 @@ typedef NS_ENUM(NSInteger, PaymentTestType){
     switch (btn.tag) {
         case ButtonType_Login:
         {
-//            //【SDK初始化-必须调用，只需调用一次】
-//            if (![TulingGameSDKHelper sharedInstance].isInitializationValid) {
-//                [[TulingGameSDKHelper sharedInstance] tlg_dataInitializationWithGameJson:[self gameInitializationValueJaosnString]];
-//            }
 
             //登录框
             [self setupSDKLoginView];

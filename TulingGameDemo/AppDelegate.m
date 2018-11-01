@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <TulingGameSDK/TulingGameSDK.h>
+#import <StoreKit/StoreKit.h>
 
 
 @interface AppDelegate ()

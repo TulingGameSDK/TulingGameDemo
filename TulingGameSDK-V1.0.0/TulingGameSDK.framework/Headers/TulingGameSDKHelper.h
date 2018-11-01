@@ -82,7 +82,6 @@ typedef void(^TLGPaymentModeTypeBlock)(TLGPaymentModeType type);
 -(void)tlg_requestLoginWithGameInitJson:(NSString *)GameInitJson block:(TLGLoginStatusBlcok)block;
 
 
-
 /*! @brief 创建角色上报【创建角色成功后调用】
  *
  * param serverId;              //【NSString】区服id
