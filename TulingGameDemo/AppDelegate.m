@@ -77,15 +77,6 @@
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     return [[TulingGameSDKHelper sharedInstance] tlg_handleOpenURL:url];
 }
-#pragma mark -- 处理【苹果内购】丢单问题
--(void)handleIAPUnfinishOrder{
-    [[TulingGameSDKHelper sharedInstance] tlg_handleIAPUnfinishOrderWithBlock:^(BOOL isSuccess, id errorMsg, NSString *gameOrderID) {
-        //支付结果(苹果内购)
-        NSLog(@"\n\n【图灵SDK苹果内购防丢单回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\nsdkOrderID:%@\n\n",isSuccess,errorMsg,gameOrderID);
-        
-    }];
-}
-
 
 
 @end

@@ -339,7 +339,10 @@ typedef NS_ENUM(NSInteger, PaymentTestType){
              TLGGameRoleEventType_CreateRole           = 1,        // 创建角色
              TLGGameRoleEventType_UpgradeRoleLevel     = 2         // 角色升级
              */
-            [[TulingGameSDKHelper sharedInstance] tlg_reportGameRoleWithJsonString:[self gameRoleValueJaosnString] eventType:TLGGameRoleEventType_EneterServer];
+            [[TulingGameSDKHelper sharedInstance] tlg_reportGameRoleWithJsonString:[self gameRoleValueJaosnString] eventType:TLGGameRoleEventType_EneterServer block:^(BOOL isSuccess, id errorMsg) {
+                NSLog(@"\n\n【图灵SDK角色上传回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\n\n",isSuccess,errorMsg);
+            }];
+            
             
         }else{
             

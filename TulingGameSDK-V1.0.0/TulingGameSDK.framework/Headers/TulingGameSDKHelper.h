@@ -17,14 +17,6 @@ typedef NS_ENUM(NSInteger,TLGGameRoleEventType){
     TLGGameRoleEventType_UpgradeRoleLevel     = 2         // 角色升级
 };
 
-/*! @brief 支付方式
- *
- */
-typedef NS_ENUM(NSInteger,TLGPaymentModeType){
-    TLGPaymentModeType_AppleIAP         = 0,       // 苹果内购
-    TLGPaymentModeType_Threeparty       = 1       //  第三方
-};
-
 
 //对接游戏，登录的状态回调
 typedef void(^TLGLoginStatusBlcok)(BOOL isSuccess,id errorMsg,NSString *userId, NSString *token);
@@ -32,6 +24,10 @@ typedef void(^TLGLoginStatusBlcok)(BOOL isSuccess,id errorMsg,NSString *userId, 
 
 //是否成功登出
 typedef void(^TLGLogoutStatusBlock)(BOOL isSuccessLogout);
+
+//角色上报
+typedef void(^TLGRoleReportStatusBlcok)(BOOL isSuccess,id errorMsg);
+
 
 /*! @brief 订单是否支付成功（三方+苹果内购）
  *
@@ -41,9 +37,6 @@ typedef void(^TLGLogoutStatusBlock)(BOOL isSuccessLogout);
  */
 typedef void(^TLGPaymentStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameOrderID);
 
-
-//支付方式
-typedef void(^TLGPaymentModeTypeBlock)(TLGPaymentModeType type);
 
 
 @interface TulingGameSDKHelper : NSObject
@@ -73,29 +66,29 @@ typedef void(^TLGPaymentModeTypeBlock)(TLGPaymentModeType type);
 /** 登录初始化 **/
 /*! @brief 游戏传参（5个组成组成参数，需要NSDictionary转成一条json string传给SDK）
  *  SDK数据初始化【必须调用，只需调用一次】
- * param gameID       【NSInteger-游戏ID】
- * param cid          【NSInteger渠道ID】
- * param aid          【NSInteger广告位ID】
- * param gameVersion  【NSString-游戏版本】
- * param gameKey      【NSString-给游戏分配的KEY】
+ * param gameID       【必传】【NSInteger-游戏ID】
+ * param cid          【必传】【NSInteger渠道ID】
+ * param aid          【必传】【NSInteger广告位ID】
+ * param gameVersion  【必传】【NSString-游戏版本】
+ * param gameKey      【必传】【NSString-给游戏分配的KEY】
  */
 -(void)tlg_requestLoginWithGameInitJson:(NSString *)GameInitJson block:(TLGLoginStatusBlcok)block;
 
 
 /*! @brief 创建角色上报【创建角色成功后调用】
  *
- * param serverId;              //【NSString】区服id
- * param serverName;            //【NSString】区服名字
- * param roleId;                //【NSString】角色id
- * param roleName;              //【NSString】角色名
- * param roleLevel;             //【NSString】角色等级
- * param vipLevel;              //【NSString】VIP等级
- * param balance;               //【CGFloat】玩家游戏币总额， 如 100 金币
- * param partyName;             //【NSString】帮派，公会名称。 若无，填 unknown
- * param roleCreatedTime;       //【NSInteger】角色创建的时间戳，单位：秒
- * param roleLevelUpgradedTime; //【NSInteger】角色升级的时间戳，单位：秒
+ * param serverId;              //【必传】【NSString】区服id
+ * param serverName;            //【必传】【NSString】区服名字
+ * param roleId;                //【必传】【NSString】角色id
+ * param roleName;              //【必传】【NSString】角色名
+ * param roleLevel;             //【必传】【NSString】角色等级
+ * param vipLevel;              //【必传】【NSString】VIP等级
+ * param balance;               //【必传】【CGFloat】玩家游戏币总额， 如 100 金币
+ * param partyName;             //【必传】【NSString】帮派，公会名称。 若无，填 unknown
+ * param roleCreatedTime;       //【必传】【NSInteger】角色创建的时间戳，单位：秒
+ * param roleLevelUpgradedTime; //【必传】【NSInteger】角色升级的时间戳，单位：秒
  */
--(void)tlg_reportGameRoleWithJsonString:(NSString *)jsonString eventType:(TLGGameRoleEventType)eventType;
+-(void)tlg_reportGameRoleWithJsonString:(NSString *)jsonString eventType:(TLGGameRoleEventType)eventType block:(TLGRoleReportStatusBlcok)block;
 
 /*! @brief 主动退出登录【游戏账号退出后调用】
  *
@@ -105,19 +98,19 @@ typedef void(^TLGPaymentModeTypeBlock)(TLGPaymentModeType type);
 /** 【必传】游戏支付相关参数 **/
 /*   生成订单接口【请注意上传的字段格式】
  *
- * param gameVersion;           //【NSString】游戏当前的版本号
- * param amount;                //【NSInteger】充值金额，单位：分,必传
- * param orderId;               //【NSString】研发传入的订单号，必传
- * param roleId;                //【NSString】玩家角色id，必传
- * param roleName;              //【NSString】玩家角色名，必传
- * param roleLevel;             //【NSString】角色等级，必传
- * param serverId;              //【NSString】区服id，必传
- * param serverName;            //【NSString】区服名字，必传
- * param productId;             //【NSString】商品ID，必传
- * param productName;           //【NSString】商品名，商品名称前请不要添加任何量词。如钻石，月卡即可。必传
- * param payInfo;               //【NSString】商品描述信息，必传
- * param productCount;          //【NSString】购买的商品数量，必传
- * param notifyUrl;             //【NSString】支付结果回调地址，必传
+ * param gameVersion;           //【必传】【NSString】游戏当前的版本号
+ * param amount;                //【必传】【NSInteger】充值金额，单位：分,必传
+ * param orderId;               //【必传】【NSString】研发传入的订单号，必传
+ * param roleId;                //【必传】【NSString】玩家角色id，必传
+ * param roleName;              //【必传】【NSString】玩家角色名，必传
+ * param roleLevel;             //【必传】【NSString】角色等级，必传
+ * param serverId;              //【必传】【NSString】区服id，必传
+ * param serverName;            //【必传】【NSString】区服名字，必传
+ * param productId;             //【必传】【NSString】商品ID，必传
+ * param productName;           //【必传】【NSString】商品名，商品名称前请不要添加任何量词。如钻石，月卡即可。必传
+ * param payInfo;               //【必传】【NSString】商品描述信息，必传
+ * param productCount;          //【必传】【NSString】购买的商品数量，必传
+ * param notifyUrl;             //【必传】【NSString】支付结果回调地址，必传
  * param extraData;             //【NSString】透传参数，字符串，可选
  */
 /*! @brief 支付操作(SDK根据游戏的版本号，出不同的支付操作)
@@ -135,10 +128,7 @@ typedef void(^TLGPaymentModeTypeBlock)(TLGPaymentModeType type);
  */
 -(BOOL)tlg_handleOpenURL:(NSURL *) url;
 
-/*! @brief 处理内购丢单问题，SDK每次进入界面，会查询本地近路的内购凭证，验证后，清空本地记录的全部内购凭证
- *
- */
--(void)tlg_handleIAPUnfinishOrderWithBlock:(TLGPaymentStatusBlock)block;
+
 
 
 
