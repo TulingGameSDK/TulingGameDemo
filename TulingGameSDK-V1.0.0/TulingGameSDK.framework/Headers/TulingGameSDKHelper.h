@@ -42,19 +42,16 @@ typedef void(^TLGPaymentStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameO
 @interface TulingGameSDKHelper : NSObject
 
 /** 判断当前的初始化是否有效 **/
-@property (nonatomic, assign) BOOL isInitializationValid;
+@property (nonatomic, assign,readonly) BOOL isInitializationValid;
 
 /** 判断当前的登录状态 YES、NO**/
-@property (nonatomic, assign) BOOL isLogin;
+@property (nonatomic, assign,readonly) BOOL isLogin;
 
 /** 当前登录用户的userId **/
-@property (nonatomic, copy) NSString *userId;
+@property (nonatomic, copy,readonly) NSString *userId;
 
 /** 当前登录用户的token **/
-@property (nonatomic, copy) NSString *token;
-
-
-@property (nonatomic, copy) TLGLogoutStatusBlock tlg_logoutStatusBlock;
+@property (nonatomic, copy,readonly) NSString *token;
 
 
 /*! @brief 单例
@@ -120,14 +117,13 @@ typedef void(^TLGPaymentStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameO
  */
 -(void)tlg_requestPaymentWithGameValueJson:(NSString *)gameValueJson block:(TLGPaymentStatusBlock)block;
 
-/*! @brief 处理通过URL启动App时传递的数据[微信、支付宝支付状态回调]
+/*! @brief 处理通过URL启动App时传递的数据[微*、支**支付状态回调]
  *
  * 需要在 application:openURL:sourceApplication:annotation:或者application:handleOpenURL中调用。
- * @param url 微信启动第三方应用时传递过来的URL
+ * @param url 微*启动第三方应用时传递过来的URL
  * @return 成功返回YES，失败返回NO。
  */
 -(BOOL)tlg_handleOpenURL:(NSURL *) url;
-
 
 
 

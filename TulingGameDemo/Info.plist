@@ -45,11 +45,6 @@
 	<array>
 		<string>mqqOpensdkSSoLogin</string>
 		<string>mqzone</string>
-		<string>sinaweibo</string>
-		<string>alipayauth</string>
-		<string>alipay</string>
-		<string>alipays</string>
-		<string>alipayshare</string>
 		<string>safepay</string>
 		<string>mqq</string>
 		<string>mqqapi</string>
@@ -59,8 +54,6 @@
 		<string>mqqwpa</string>
 		<string>mqqbrowser</string>
 		<string>wtloginmqq2</string>
-		<string>weixin</string>
-		<string>wechat</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
