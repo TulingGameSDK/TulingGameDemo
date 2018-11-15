@@ -313,10 +313,9 @@ typedef NS_ENUM(NSInteger, ButtonType){
         }else{
             
         }
-        
     }];
-    
 }
+
 #pragma mark -- 登出
 -(void)logout{
     //主动登出
@@ -339,12 +338,15 @@ typedef NS_ENUM(NSInteger, ButtonType){
     
     [[TulingGameSDKHelper sharedInstance] tlg_requestPaymentWithGameValueJson:gameValueJson];
 }
+
 #pragma mark -- 本地通知（登录状态）【主动登出、被动登出（token失效）】
 -(void)setupNoti{
-    // 注册通知监听-是否token失效导致账号登出
+    // 注册通知监听- 强制登出
+    // 例如:当前账号token失效，账号被SDK强制下线
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logoutNotification:) name:@"TLG_Notification_Logout" object:nil];
     
     // 注册通知监听-某些情况SDK需要强制调起登录框
+    // 例如：SDK内修改密码成功，需要强制调起一次登录框进行重新登录操作
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showLoginViewNotification:) name:@"TLG_Notification_ShowLoginView" object:nil];
     
 }
@@ -376,6 +378,9 @@ typedef NS_ENUM(NSInteger, ButtonType){
 }
 
 -(void)showLoginViewNotification:(NSNotification *)notification{
+    
+    NSLog(@"TulingGameDemo-本地通知方式-SDK强制调起登录框");
+
     //显示登录框
     [self setupSDKLoginView];
 }
