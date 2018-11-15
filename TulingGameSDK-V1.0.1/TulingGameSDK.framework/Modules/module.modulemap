@@ -1,0 +1,6 @@
+framework module TulingGameSDK {
+  umbrella header "TulingGameSDK.h"
+
+  export *
+  module * { export * }
+}

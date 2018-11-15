@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import "Util.h" //本地测试的工具集合
+
 #import <TulingGameSDK/TulingGameSDK.h>
 
 static const CGFloat kButtonWidth                              = 200.0;
@@ -24,10 +26,6 @@ typedef NS_ENUM(NSInteger, ButtonType){
 
 };
 
-typedef NS_ENUM(NSInteger, PaymentTestType){
-    PaymentTestType_Threeparty  = 0,    // 三方
-    PaymentTestType_IAP         = 1,    // 内购
-};
 
 
 @interface ViewController ()
@@ -144,231 +142,14 @@ typedef NS_ENUM(NSInteger, PaymentTestType){
     }
 }
 
-#pragma mark -- 游戏参数初始化
--(NSString *)gameInitializationValueJaosnString{
-    
-    /*! @brief 游戏传参（5个组成组成参数，需要NSDictionary转成一条json string传给SDK）
-     *
-     * param gameID       【NSInteger-游戏ID】
-     * param cid          【NSInteger渠道ID】
-     * param aid          【NSInteger广告位ID】
-     * param gameVersion  【NSString-游戏版本】
-     * param gameKey      【NSString-给游戏分配的KEY】
-     */
-
-    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:
-                         @(23),@"gameID",
-                         @(3),@"cid",
-                         @(3),@"aid",
-                         @"1.0",@"gameVersion",
-                         @"Ggg18dKOam7Wj6IoMMNdgDE0UmMejKg7",@"gameKey",
-                         nil];
-    
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil];
-    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    
-    return jsonString;
-
-}
-
-#pragma mark -- 游戏角色上报
--(NSString *)gameRoleValueJaosnString{
-    
-    /*! @brief 创建角色上报【创建角色成功后调用】
-     *
-     * param serverId;              //【NSString】区服id
-     * param serverName;            //【NSString】区服名字
-     * param roleId;                //【NSString】角色id
-     * param roleName;              //【NSString】角色名
-     * param roleLevel;             //【NSInteger】角色等级
-     * param vipLevel;              //【NSInteger】VIP等级
-     * param balance;               //【CGFloat】玩家游戏币总额， 如 100 金币
-     * param partyName;             //【NSString】帮派，公会名称。 若无，填 unknown
-     * param roleCreatedTime;       //【NSInteger】角色创建的时间戳，单位：秒
-     * param roleLevelUpgradedTime; //【NSInteger】角色升级的时间戳，单位：秒
-     */
-    
-    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:
-                         @"3",@"serverId",
-                         @"魔兽世界-中国服",@"serverName",
-                         @"3456",@"roleId",
-                         @"玩家角色名",@"roleName",
-                         @"10",@"roleLevel",
-                         @"3",@"vipLevel",
-                         @(10000),@"balance",
-                         @"图灵公会",@"partyName",
-                         @(1539571500),@"roleCreatedTime",
-                         @(1539572950),@"roleLevelUpgradedTime",
-                         nil];
-    
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil];
-    
-    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    
-    return jsonString;
-    
-}
-
-
-#pragma mark -- 游戏预订单生成，传参
--(NSString *)gamePaymentOrderValueJaosnStringWithType:(PaymentTestType)type{
-    
-    /*! @brief 生成订单接口【请注意上传的字段格式】
-     *
-     * param gameVersion;           //【NSString】游戏当前的版本号（SDK会根据版本号，做开关控制）
-     * param amount;                //【NSInteger】充值金额，单位：分,必传
-     * param orderId;               //【NSString】研发传入的订单号，必传
-     * param roleId;                //【NSString】玩家角色id，必传
-     * param roleName;              //【NSString】玩家角色名，必传
-     * param roleLevel;             //【NSString】角色等级，必传
-     * param serverId;              //【NSString】区服id，必传
-     * param serverName;            //【NSString】区服名字，必传
-     * param productId;             //【NSString】商品ID，必传,bundleID对应的苹果内购的商品ID，例如：com.TulingGame.SDKDemo.pay6
-     * param productName;           //【NSString】商品名，商品名称前请不要添加任何量词。如钻石，月卡即可。必传
-     * param payInfo;               //【NSString】商品描述信息，必传
-     * param productCount;          //【NSString】购买的商品数量，必传
-     * param notifyUrl;             //【NSString】支付结果回调地址，必传
-     * param extraData;             //【NSString】透传参数，字符串，可选
-     */
-
-
-    //（SDK会根据版本号，做开关控制）
-    //此处只是为了方便展示功能&测试，所以做了type操作判断，实际出包，请直接用【[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]】设置游戏版本号
-    NSString *appVersion = @"";
-    
-    if (type == PaymentTestType_Threeparty) {
-        appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-        
-    }else{
-        appVersion = @"2.0.0";
-    }
-
-    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:
-                         appVersion,@"gameVersion",
-                         @(1),@"amount",
-                         @"2018101034t445675767",@"orderId",
-                         @"3456",@"roleId",
-                         @"玩家角色名",@"roleName",
-                         @"10",@"roleLevel",
-                         @"3",@"serverId",
-                         @"魔兽世界-中国服",@"serverName",
-                         @"com.TulingGame.SDKDemo.pay6",@"productId",
-                         @"游戏钻石",@"productName",
-                         @"充值100金币-10元",@"payInfo",
-                         @"1",@"productCount",
-                         @"https://www.baidu.com",@"notifyUrl",
-                         @"这是一条测试订单",@"extraData",
-                         nil];
-    
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil];
-    
-    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    
-    return jsonString;
-    
-}
-
-#pragma mark -- 登出状态的t本地通知【主动登出、被动登出（token失效）】
--(void)setupNoti{
-    // 注册通知监听-是否token失效导致账号登出
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logoutNotification:) name:@"TLG_Notification_Logout" object:nil];
-    
-    // 注册通知监听-某些情况SDK需要强制调起登录框
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showLoginViewNotification:) name:@"TLG_Notification_ShowLoginView" object:nil];
-
-}
-
--(void)logoutNotification:(NSNotification *)notification{
-    /*
-     * 主要返回登出的回调【主动&被动】，针对一些被动登出情况，做处理
-     * YES:主动登出
-     * NO:被动登出
-     */
-    id notiBody = notification.object;
-    
-    BOOL isActiveLogout = [[notiBody objectForKey:@"activeLogout"] boolValue];
-    
-    if (isActiveLogout) {
-        //主动登出【block回调&本地通知回调，处理其中之一就可以】
-        NSLog(@"TulingGameDemo-本地通知方式-被动登出成功");
-
-    }else{
-        //被动登出
-        NSLog(@"TulingGameDemo-本地通知方式-被动登出成功");
-    }
-}
-
--(void)showLoginViewNotification:(NSNotification *)notification{
-    //显示登录框
-    [self setupSDKLoginView];
-}
-
-
-#pragma mark --根据登录状态，更新UI
+//更新UI
 -(void)updateUIWithLoginStatus:(BOOL)isLogin{
     _loginButton.hidden = isLogin;
     _containView.hidden = !isLogin;
 }
 
 
-#pragma mark -- 显示登录框
--(void)setupSDKLoginView{
-    
-    [[TulingGameSDKHelper sharedInstance] tlg_requestLoginWithGameInitJson:[self gameInitializationValueJaosnString] block:^(BOOL isSuccess, id errorMsg, NSString *userId, NSString *token) {
-        
-        NSLog(@"\n\n【图灵SDK登录回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\nuserId:%@\ntoken:%@\n\n",isSuccess,errorMsg,userId,token);
-        
-        if (isSuccess) {
-            
-            NSLog(@"\n\n\n\nTulingGameDemo-Block回调-登录成功");
-            NSLog(@"\n\n登录成功-Block回调数据\nuserId：%@\ntoken:%@",userId,token);
-            
-            //单例读取SDK本地的userid、token方法
-            if ([TulingGameSDKHelper sharedInstance].isLogin) {
-                NSLog(@"\n\n登录成功-SDK本地存储数据读取方法\nuserId：%@\ntoken:%@",[TulingGameSDKHelper sharedInstance].userId,[TulingGameSDKHelper sharedInstance].token);
-            }
-            
-            
-            //更新UI显示
-            [self updateUIWithLoginStatus:isSuccess];
-            
-            
-            //【进入服务器、创建角色、角色升级】3种情况，需要进行角色上报API调用
-            /*! @brief 角色上报类型
-             TLGGameRoleEventType_EneterServer         = 0,        // 进入服务器
-             TLGGameRoleEventType_CreateRole           = 1,        // 创建角色
-             TLGGameRoleEventType_UpgradeRoleLevel     = 2         // 角色升级
-             */
-            [[TulingGameSDKHelper sharedInstance] tlg_reportGameRoleWithJsonString:[self gameRoleValueJaosnString] eventType:TLGGameRoleEventType_EneterServer block:^(BOOL isSuccess, id errorMsg) {
-                NSLog(@"\n\n【图灵SDK角色上传回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\n\n",isSuccess,errorMsg);
-            }];
-            
-            
-        }else{
-            
-        }
-        
-    }];
-
-}
-
-#pragma mark -- 调用支付操作
-//SDK本身会根据游戏的版本号，做后台开关，控制支付方式
-//此处type只为方便展示&测试内容，（SDKDemo本身app version设置了1.0.0是走三方，如果设置了2.0.0就走内购）
--(void)setupSDKPaymentViewWithType:(PaymentTestType)type{
-
-    //游戏需要组装参数，向SDK传支付相关的参数
-    NSString *gameValueJson = [self gamePaymentOrderValueJaosnStringWithType:type];
-    
-    [[TulingGameSDKHelper sharedInstance] tlg_requestPaymentWithGameValueJson:gameValueJson block:^(BOOL isSuccess,id errorMsg, NSString *gameOrderID) {
-        
-        //支付结果(三方 + 苹果内购)
-        NSLog(@"\n\n【图灵SDK支付回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\ngameOrderID:%@\n\n",isSuccess,errorMsg,gameOrderID);
-        
-    }];
-}
-
-#pragma mark -- SDKDemo点击事件
+//点击事件
 -(void)btnAction:(UIButton *)btn{
     
     switch (btn.tag) {
@@ -405,14 +186,8 @@ typedef NS_ENUM(NSInteger, PaymentTestType){
         case ButtonType_Logout:
         {
             //主动登出
-            [[TulingGameSDKHelper sharedInstance] tlg_reportGameLogoutWithBlock:^(BOOL isSuccessLogout) {
-
-                [self updateUIWithLoginStatus:!isSuccessLogout];
-                
-                NSLog(@"TulingGameDemo-Block回调-主动登出成功");
-
-            }];
-
+            [self logout];
+            
         }break;
             
         default:
@@ -422,8 +197,7 @@ typedef NS_ENUM(NSInteger, PaymentTestType){
 
 
 
-#pragma mark -- 控制界面方向(demo展示，游戏实际不需要接入这部分UI旋转控制)
-#pragma mark - viewController orientation
+//控制界面方向(demo展示，游戏实际不需要接入这部分UI旋转控制)
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations//支持哪些方向
 {
     return UIInterfaceOrientationMaskAllButUpsideDown; //demo暂定只有横屏设置
@@ -501,6 +275,111 @@ typedef NS_ENUM(NSInteger, PaymentTestType){
     _containView.center = self.view.center;
     _backgroundImageView.frame = [UIScreen mainScreen].bounds;
 }
+
+
+
+#pragma mark ************************* 以下为游戏CP需要接入代码部分 *************************
+
+#pragma mark -- 登录
+-(void)setupSDKLoginView{
+    
+    [[TulingGameSDKHelper sharedInstance] tlg_requestLoginWithGameInitJson:[Util gameInitializationValueJaosnString] block:^(BOOL isSuccess, id errorMsg, NSString *userId, NSString *token) {
+        
+        NSLog(@"\n\n【图灵SDK登录回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\nuserId:%@\ntoken:%@\n\n",isSuccess,errorMsg,userId,token);
+        
+        if (isSuccess) {
+            
+            NSLog(@"\n\n\n\nTulingGameDemo-Block回调-登录成功");
+            NSLog(@"\n\n登录成功-Block回调数据\nuserId：%@\ntoken:%@",userId,token);
+            
+            //单例读取SDK本地的userid、token方法
+            if ([TulingGameSDKHelper sharedInstance].isLogin) {
+                NSLog(@"\n\n登录成功-SDK本地存储数据读取方法\nuserId：%@\ntoken:%@",[TulingGameSDKHelper sharedInstance].userId,[TulingGameSDKHelper sharedInstance].token);
+            }
+            
+            //更新UI显示（游戏代码自己控制界面更新）
+            [self updateUIWithLoginStatus:isSuccess];
+            
+            //【进入服务器、创建角色、角色升级】3种情况，需要进行角色上报API调用
+            /*! @brief 角色上报类型
+             TLGGameRoleEventType_EneterServer         = 0,        // 进入服务器
+             TLGGameRoleEventType_CreateRole           = 1,        // 创建角色
+             TLGGameRoleEventType_UpgradeRoleLevel     = 2         // 角色升级
+             */
+            [[TulingGameSDKHelper sharedInstance] tlg_reportGameRoleWithJsonString:[Util gameRoleValueJaosnString] eventType:TLGGameRoleEventType_EneterServer block:^(BOOL isSuccess, id errorMsg) {
+                NSLog(@"\n\n【图灵SDK角色上传回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\n\n",isSuccess,errorMsg);
+            }];
+            
+        }else{
+            
+        }
+        
+    }];
+    
+}
+#pragma mark -- 登出
+-(void)logout{
+    //主动登出
+    [[TulingGameSDKHelper sharedInstance] tlg_reportGameLogoutWithBlock:^(BOOL isSuccessLogout) {
+        
+        [self updateUIWithLoginStatus:!isSuccessLogout];
+        
+        NSLog(@"TulingGameDemo-Block回调-主动登出成功");
+        
+    }];
+    
+}
+
+#pragma mark -- 支付
+//SDK本身会根据游戏的版本号，做后台开关，控制支付方式
+//此处type只为方便展示&测试内容，（SDKDemo本身app version设置了1.0.0是走三方，如果设置了2.0.0就走内购）
+-(void)setupSDKPaymentViewWithType:(PaymentTestType)type{
+    //游戏需要组装参数，向SDK传支付相关的参数
+    NSString *gameValueJson = [Util gamePaymentOrderValueJaosnStringWithType:type];
+    
+    [[TulingGameSDKHelper sharedInstance] tlg_requestPaymentWithGameValueJson:gameValueJson];
+}
+#pragma mark -- 本地通知（登录状态）【主动登出、被动登出（token失效）】
+-(void)setupNoti{
+    // 注册通知监听-是否token失效导致账号登出
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logoutNotification:) name:@"TLG_Notification_Logout" object:nil];
+    
+    // 注册通知监听-某些情况SDK需要强制调起登录框
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showLoginViewNotification:) name:@"TLG_Notification_ShowLoginView" object:nil];
+    
+}
+
+-(void)logoutNotification:(NSNotification *)notification{
+    /*
+     * 主要返回登出的回调【主动&被动】，针对一些被动登出情况，做处理
+     * YES:主动登出
+     * NO:被动登出
+     */
+    id notiBody = notification.object;
+    
+    BOOL isActiveLogout = [[notiBody objectForKey:@"activeLogout"] boolValue];
+    
+    if (!isActiveLogout) {
+        NSLog(@"TulingGameDemo-本地通知方式-被动登出成功");
+    }
+    
+    /*
+    if (isActiveLogout) {
+        //主动登出【block回调&本地通知回调，监听处理其中之一即可】
+        NSLog(@"TulingGameDemo-本地通知方式-被动登出成功");
+        
+    }else{
+        //被动登出
+        NSLog(@"TulingGameDemo-本地通知方式-被动登出成功");
+    }
+    */
+}
+
+-(void)showLoginViewNotification:(NSNotification *)notification{
+    //显示登录框
+    [self setupSDKLoginView];
+}
+
 
 
 @end

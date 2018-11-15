@@ -7,8 +7,9 @@
 //
 
 #import "AppDelegate.h"
+#import "Util.h" //本地测试的工具集合
+
 #import <TulingGameSDK/TulingGameSDK.h>
-#import <StoreKit/StoreKit.h>
 
 
 @interface AppDelegate ()
@@ -29,7 +30,35 @@
     UINavigationController *NC = [[UINavigationController alloc] initWithRootViewController:VC];
     self.window.rootViewController = NC;
     
+#pragma mark -- IAP监听注册 && 支付结果回调
+    //【图灵SDK】注册全局的IAP操作监听(含丢单处理逻辑)
+    [[TulingGameSDKHelper sharedInstance] tlg_registerIAPNotiWithBlock:^(NSString *productID) {
+        
+        //游戏重新向SDK传支付订单参数
+        //IAP防丢当操作方案:IAP先完成支付操作，支付成功之后，才向游戏请求gameOrderID，绑定订单号
+        //苹果内购IAP：游戏根据SDK传过来的productID，重新组装当前时间的订单相关参数，传给SDK
+        NSString *gameOrderJson = [Util gamePaymentOrderValueJaosnStringWithType:PaymentTestType_IAP];
+
+        //SDK开始绑定订单号，并且验证【内购凭证】
+        [[TulingGameSDKHelper sharedInstance] tlg_requestIAPWithGameOrderJson:gameOrderJson];
+        
+    }];
+    
+    //支付结果回调（IAP+三方）
+    [[TulingGameSDKHelper sharedInstance] tlg_paymentCallBack:^(BOOL isSuccess, id errorMsg, NSString *gameOrderID) {
+        //支付结果(苹果内购-丢单部分重新下单)
+        NSLog(@"\n\n【图灵SDK支付回调结果：】\nisSuccess:%d\nerrorMsg:%@\ngameOrderID:%@\n\n",isSuccess,errorMsg,gameOrderID);
+    }];
+    
     return YES;
+}
+
+#pragma mark -- 三方支付APP回调
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return [[TulingGameSDKHelper sharedInstance] tlg_handleOpenURL:url];
+}
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [[TulingGameSDKHelper sharedInstance] tlg_handleOpenURL:url];
 }
 
 
@@ -57,16 +86,6 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
-
-
-#pragma mark -- 微*\支** APP回调
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    return [[TulingGameSDKHelper sharedInstance] tlg_handleOpenURL:url];
-}
-
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    return [[TulingGameSDKHelper sharedInstance] tlg_handleOpenURL:url];
 }
 
 
