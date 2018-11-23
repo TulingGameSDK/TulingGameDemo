@@ -23,12 +23,13 @@ typedef NS_ENUM(NSInteger, ButtonType){
     ButtonType_Payment_IAP    = 2,    // 支付（SDK自身判断三方还是苹果内购）
     ButtonType_Logout         = 3,     // 退出游戏
     ButtonType_Login          = 4,    // 登录
-
+    
 };
 
 
 
 @interface ViewController ()
+@property (nonatomic, strong) UILabel *bundleIDLabel;
 @property (nonatomic, strong) UIButton *loginButton;
 @property (nonatomic, strong) UIView *containView;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
@@ -42,7 +43,7 @@ typedef NS_ENUM(NSInteger, ButtonType){
 //最后在dealloc中移除通知
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self];
-//    [[UIDevice currentDevice]endGeneratingDeviceOrientationNotifications];
+    //    [[UIDevice currentDevice]endGeneratingDeviceOrientationNotifications];
 }
 
 - (void)viewDidLoad {
@@ -51,7 +52,7 @@ typedef NS_ENUM(NSInteger, ButtonType){
     
     //登出状态通知
     [self setupNoti];
-
+    
     //隐藏导航栏
     self.navigationController.navigationBarHidden = YES;
     
@@ -60,6 +61,14 @@ typedef NS_ENUM(NSInteger, ButtonType){
     _backgroundImageView.image = [UIImage imageNamed:@"iphonetime.jpeg"];
     _backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:_backgroundImageView];
+    
+    //bundle ID
+    _bundleIDLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 30)];
+    _bundleIDLabel.font = [UIFont boldSystemFontOfSize:16.0];
+    _bundleIDLabel.textColor = [UIColor blackColor];
+    _bundleIDLabel.text = [[NSBundle mainBundle] bundleIdentifier];
+    _bundleIDLabel.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:_bundleIDLabel];
     
     //登录
     {
@@ -76,7 +85,7 @@ typedef NS_ENUM(NSInteger, ButtonType){
         _loginButton.layer.masksToBounds = YES;
         [self.view addSubview:_loginButton];
         _loginButton.center = self.view.center;
-
+        
     }
     
     //操作按钮【登录、切换账号、支付、退出游戏】
@@ -97,7 +106,7 @@ typedef NS_ENUM(NSInteger, ButtonType){
         button.layer.cornerRadius = 2.5;
         button.layer.masksToBounds = YES;
         [_containView addSubview:button];
-
+        
     }
     
     //登录\登出状态UI
@@ -106,7 +115,7 @@ typedef NS_ENUM(NSInteger, ButtonType){
     
     //游戏界面方向检测
     [self setupUIOriginNoti];
-
+    
     
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -146,6 +155,7 @@ typedef NS_ENUM(NSInteger, ButtonType){
 -(void)updateUIWithLoginStatus:(BOOL)isLogin{
     _loginButton.hidden = isLogin;
     _containView.hidden = !isLogin;
+    _bundleIDLabel.frame = CGRectMake(0, _containView.frame.origin.y -80, [UIScreen mainScreen].bounds.size.width, 30);
 }
 
 
@@ -155,18 +165,18 @@ typedef NS_ENUM(NSInteger, ButtonType){
     switch (btn.tag) {
         case ButtonType_Login:
         {
-
+            
             //登录框
             [self setupSDKLoginView];
             
-
+            
         }break;
             
         case ButtonType_ChangeAccount:
         {
             //登录框
             [self setupSDKLoginView];
-
+            
         }break;
             
         case ButtonType_Payment:
@@ -180,7 +190,7 @@ typedef NS_ENUM(NSInteger, ButtonType){
         {
             //内购，用于展示【内购】测试功能，实际不接入这个方法
             [self setupSDKPaymentViewWithType:PaymentTestType_IAP];
-
+            
         }break;
             
         case ButtonType_Logout:
@@ -242,25 +252,25 @@ typedef NS_ENUM(NSInteger, ButtonType){
         case UIInterfaceOrientationPortrait:
             NSLog(@"界面直立");
             [self dealwithOriginWithType:0];
-
+            
             break;
             
         case UIInterfaceOrientationPortraitUpsideDown:
             NSLog(@"界面直立，上下颠倒");
             [self dealwithOriginWithType:0];
-
+            
             break;
             
         case UIInterfaceOrientationLandscapeLeft:
             NSLog(@"界面朝左");
             [self dealwithOriginWithType:1];
-
+            
             break;
             
         case UIInterfaceOrientationLandscapeRight:
             NSLog(@"界面朝右");
             [self dealwithOriginWithType:1];
-
+            
             break;
             
         default:
@@ -274,6 +284,9 @@ typedef NS_ENUM(NSInteger, ButtonType){
     _loginButton.center = self.view.center;
     _containView.center = self.view.center;
     _backgroundImageView.frame = [UIScreen mainScreen].bounds;
+    
+    _bundleIDLabel.frame = CGRectMake(0, _containView.frame.origin.y -80, [UIScreen mainScreen].bounds.size.width, 30);
+
 }
 
 
@@ -283,14 +296,14 @@ typedef NS_ENUM(NSInteger, ButtonType){
 #pragma mark -- 登录
 -(void)setupSDKLoginView{
     
-    [[TulingGameSDKHelper sharedInstance] tlg_requestLoginWithGameInitJson:[Util gameInitializationValueJaosnString] block:^(BOOL isSuccess, id errorMsg, NSString *userId, NSString *token) {
+    [[TulingGameSDKHelper sharedInstance] tlg_requestLoginWithGameInitJson:[Util gameInitializationValueJaosnString] block:^(BOOL isSuccess, id errorMsg, NSString *sdkUserID, NSString *sdkToken) {
         
-        NSLog(@"\n\n【图灵SDK登录回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\nuserId:%@\ntoken:%@\n\n",isSuccess,errorMsg,userId,token);
+        NSLog(@"\n\n【图灵SDK登录回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\nuserId:%@\ntoken:%@\n\n",isSuccess,errorMsg,sdkUserID,sdkToken);
         
         if (isSuccess) {
             
             NSLog(@"\n\n\n\nTulingGameDemo-Block回调-登录成功");
-            NSLog(@"\n\n登录成功-Block回调数据\nuserId：%@\ntoken:%@",userId,token);
+            NSLog(@"\n\n登录成功-Block回调数据\nuserId：%@\ntoken:%@",sdkUserID,sdkToken);
             
             //单例读取SDK本地的userid、token方法
             if ([TulingGameSDKHelper sharedInstance].isLogin) {
@@ -366,21 +379,21 @@ typedef NS_ENUM(NSInteger, ButtonType){
     }
     
     /*
-    if (isActiveLogout) {
-        //主动登出【block回调&本地通知回调，监听处理其中之一即可】
-        NSLog(@"TulingGameDemo-本地通知方式-被动登出成功");
-        
-    }else{
-        //被动登出
-        NSLog(@"TulingGameDemo-本地通知方式-被动登出成功");
-    }
-    */
+     if (isActiveLogout) {
+     //主动登出【block回调&本地通知回调，监听处理其中之一即可】
+     NSLog(@"TulingGameDemo-本地通知方式-被动登出成功");
+     
+     }else{
+     //被动登出
+     NSLog(@"TulingGameDemo-本地通知方式-被动登出成功");
+     }
+     */
 }
 
 -(void)showLoginViewNotification:(NSNotification *)notification{
     
     NSLog(@"TulingGameDemo-本地通知方式-SDK强制调起登录框");
-
+    
     //显示登录框
     [self setupSDKLoginView];
 }
@@ -388,3 +401,4 @@ typedef NS_ENUM(NSInteger, ButtonType){
 
 
 @end
+

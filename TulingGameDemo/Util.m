@@ -102,17 +102,20 @@
     //（SDK会根据版本号，做开关控制）
     //此处只是为了方便展示功能&测试，所以做了type操作判断，实际出包，请直接用【[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]】设置游戏版本号
     NSString *appVersion = @"";
+    NSInteger amount;
     
     if (type == PaymentTestType_Threeparty) {
         appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        amount = 1;
         
     }else{
         appVersion = @"2.0.0";
+        amount = 600;
     }
     
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:
                          appVersion,@"gameVersion",
-                         @(1),@"amount",
+                         @(amount),@"amount",
                          @"2018101034t445675767",@"orderId",
                          @"3456",@"roleId",
                          @"玩家角色名",@"roleName",

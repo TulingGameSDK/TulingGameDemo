@@ -19,7 +19,7 @@ typedef NS_ENUM(NSInteger,TLGGameRoleEventType){
 
 
 //对接游戏，登录的状态回调
-typedef void(^TLGLoginStatusBlcok)(BOOL isSuccess,id errorMsg,NSString *userId, NSString *token);
+typedef void(^TLGLoginStatusBlcok)(BOOL isSuccess,id errorMsg,NSString *sdkUserID, NSString *sdkToken);
 
 
 //是否成功登出
@@ -28,8 +28,12 @@ typedef void(^TLGLogoutStatusBlock)(BOOL isSuccessLogout);
 //角色上报
 typedef void(^TLGRoleReportStatusBlcok)(BOOL isSuccess,id errorMsg);
 
-//请求游戏订单
-typedef void(^TLGGameOrderParamRequestBlcok)(NSString *productID);
+/*! @brief 请求游戏订单
+ *
+ * @param productID  IAP后台配置好的商品的ID，全网唯一
+ * @param price      该productID对应的价钱（单位：分）V1.0.2新增
+ */
+typedef void(^TLGGameOrderParamRequestBlcok)(NSString *productID, NSString *price, NSString *sdkUserID);
 
 
 
