@@ -25,20 +25,21 @@
     _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     _window.backgroundColor = [UIColor whiteColor];
     [_window makeKeyAndVisible];
-
+    
     UIViewController *VC = [NSClassFromString(@"ViewController") new];
     UINavigationController *NC = [[UINavigationController alloc] initWithRootViewController:VC];
     self.window.rootViewController = NC;
     
 #pragma mark -- IAP监听注册 && 支付结果回调
     //【图灵SDK】注册全局的IAP操作监听(含丢单处理逻辑)
-    [[TulingGameSDKHelper sharedInstance] tlg_registerIAPNotiWithBlock:^(NSString *productID) {
+    [[TulingGameSDKHelper sharedInstance] tlg_registerIAPNotiWithBlock:^(NSString *productID, NSString *price, NSString *sdkUserID) {
         
         //游戏重新向SDK传支付订单参数
-        //IAP防丢当操作方案:IAP先完成支付操作，支付成功之后，才向游戏请求gameOrderID，绑定订单号
-        //苹果内购IAP：游戏根据SDK传过来的productID，重新组装当前时间的订单相关参数，传给SDK
+        //SDK内部有判断当前登录的账户信息，内购凭证全部是跟SDK的userID挂钩并且本地h持久化存储（放丢单）
+        //IAP防丢当操作方案:IAP先完成支付操作，支付成功之后（还没进行内购凭证的有效性验证），才向游戏请求gameOrderID，绑定订单号
+        //苹果内购IAP：游戏根据SDK传过来的productID,price，重新组装当前时间点的订单相关参数，传给SDK
         NSString *gameOrderJson = [Util gamePaymentOrderValueJaosnStringWithType:PaymentTestType_IAP];
-
+        
         //SDK开始绑定订单号，并且验证【内购凭证】
         [[TulingGameSDKHelper sharedInstance] tlg_requestIAPWithGameOrderJson:gameOrderJson];
         
@@ -91,3 +92,4 @@
 
 
 @end
+
