@@ -29,7 +29,7 @@
                          @"1.0",@"gameVersion",
                          @"Ggg18dKOam7Wj6IoMMNdgDE0UmMejKg7",@"gameKey",
                          nil];
-    
+
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
@@ -76,9 +76,26 @@
     
 }
 
+#pragma mark -- 商品ID列表（游戏需要根据自身的匹配相关的信息），需要同步修改【amountWithProductID】方法
++ (NSString *)productIDInIndex:(NSInteger)index{
+    NSArray *array = [[NSArray alloc] initWithObjects:
+                      @"com.TulingGame.SDKDemo.pay6",
+                      @"com.TulingGame.SDKDemo.pay18",
+                      @"com.TulingGame.SDKDemo.pay25",
+                      @"com.TulingGame.SDKDemo.pay40",
+                      @"com.TulingGame.SDKDemo.pay50",
+                      @"com.TulingGame.SDKDemo.pay88",nil];
+    
+    if (index < array.count) {
+        return array[index];
+    }else{
+        return array[0];
+    }
+}
+
 
 #pragma mark -- 游戏预订单生成，传参
-+ (NSString *)gamePaymentOrderValueJaosnStringWithType:(PaymentTestType)type{
++ (NSString *)gamePaymentOrderValueJaosnStringWithType:(PaymentTestType)type productId:(NSString *)productId{
     
     /*! @brief 生成订单接口【请注意上传的字段格式】
      *
@@ -106,11 +123,13 @@
     
     if (type == PaymentTestType_Threeparty) {
         appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-        amount = 1;
+        amount = 1; //0.01元
         
     }else{
         appVersion = @"2.0.0";
-        amount = 600;
+        
+        NSString *price = [self amountWithProductID:productId];
+        amount = price.intValue * 100; //单位：分
     }
     
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:
@@ -122,7 +141,7 @@
                          @"10",@"roleLevel",
                          @"3",@"serverId",
                          @"魔兽世界-中国服",@"serverName",
-                         [self productIDWithIndex:0],@"productId",
+                         productId,@"productId",
                          @"游戏钻石",@"productName",
                          @"充值100金币-10元",@"payInfo",
                          @"1",@"productCount",
@@ -138,20 +157,11 @@
     
 }
 
-+(NSString *)productIDWithIndex:(NSInteger)index{
-    NSArray *productArr= [[NSArray alloc] initWithObjects:
-                          @"com.TulingGame.SDKDemo.pay6",
-                          @"com.TulingGame.SDKDemo.pay18",
-                          @"com.TulingGame.SDKDemo.pay25",
-                          @"com.TulingGame.SDKDemo.pay40",
-                          @"com.TulingGame.SDKDemo.pay50",
-                          @"com.TulingGame.SDKDemo.pay88", nil];
++(NSString *)amountWithProductID:(NSString *)productId{
     
-    if (index < productArr.count) {
-        return productArr[index];
-    }else{
-        return @"com.TulingGame.SDKDemo.pay6"; //默认值
-    }
+    NSString *price = [productId stringByReplacingOccurrencesOfString:@"com.TulingGame.SDKDemo.pay" withString:@""];
+    
+    return price;
 }
 
 

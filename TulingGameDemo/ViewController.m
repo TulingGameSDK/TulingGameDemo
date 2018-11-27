@@ -21,21 +21,19 @@ typedef NS_ENUM(NSInteger, ButtonType){
     ButtonType_ChangeAccount  = 0,    // 切换账号
     ButtonType_Payment        = 1,    // 支付（SDK自身判断三方还是苹果内购）
     ButtonType_Payment_IAP    = 2,    // 支付（SDK自身判断三方还是苹果内购）
-    ButtonType_Logout         = 3,     // 退出游戏
+    ButtonType_Logout         = 3,    // 退出游戏
     ButtonType_Login          = 4,    // 登录
-    
 };
 
 
 
-@interface ViewController ()
+
+
+@interface ViewController ()<UIActionSheetDelegate>
 @property (nonatomic, strong) UILabel *bundleIDLabel;
 @property (nonatomic, strong) UIButton *loginButton;
 @property (nonatomic, strong) UIView *containView;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
-
-
-
 @end
 
 @implementation ViewController
@@ -182,14 +180,14 @@ typedef NS_ENUM(NSInteger, ButtonType){
         case ButtonType_Payment:
         {
             //支付
-            [self setupSDKPaymentViewWithType:PaymentTestType_Threeparty];
+            [self setupSDKPaymentViewWithType:PaymentTestType_Threeparty productId:@"com.TulingGame.SDKDemo.pay6"];
             
         }break;
             
         case ButtonType_Payment_IAP:
         {
             //内购，用于展示【内购】测试功能，实际不接入这个方法
-            [self setupSDKPaymentViewWithType:PaymentTestType_IAP];
+            [self showProductList];
             
         }break;
             
@@ -205,6 +203,35 @@ typedef NS_ENUM(NSInteger, ButtonType){
     }
 }
 
+-(void)showProductList{
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                  initWithTitle:@"demo测试商品选择"
+                                  delegate:self
+                                  cancelButtonTitle:@"取消"
+                                  destructiveButtonTitle:nil
+                                  otherButtonTitles:
+                                  [Util productIDInIndex:0],
+                                  [Util productIDInIndex:1],
+                                  [Util productIDInIndex:2],
+                                  [Util productIDInIndex:3],
+                                  [Util productIDInIndex:4],
+                                  [Util productIDInIndex:5],nil];
+    actionSheet.actionSheetStyle = UIBarStyleDefault;
+    [actionSheet showInView:self.view];
+}
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    if (buttonIndex <= 5) {
+        //选择完，调起IAP支付
+        [self setupSDKPaymentViewWithType:PaymentTestType_IAP productId:[Util productIDInIndex:buttonIndex]];
+        
+    }else{
+        
+    }
+
+}
 
 
 //控制界面方向(demo展示，游戏实际不需要接入这部分UI旋转控制)
@@ -345,7 +372,7 @@ typedef NS_ENUM(NSInteger, ButtonType){
 #pragma mark -- 支付
 //SDK本身会根据游戏的版本号，做后台开关，控制支付方式
 //此处type只为方便展示&测试内容，（SDKDemo本身app version设置了1.0.0是走三方，如果设置了2.0.0就走内购）
--(void)setupSDKPaymentViewWithType:(PaymentTestType)type{
+-(void)setupSDKPaymentViewWithType:(PaymentTestType)type productId:(NSString *)productId{
     
 #if (TARGET_IPHONE_SIMULATOR)
     // 在模拟器的情况下
@@ -353,8 +380,8 @@ typedef NS_ENUM(NSInteger, ButtonType){
 #else
     // 在真机情况下
     //游戏需要组装参数，向SDK传支付相关的参数
-    NSString *gameValueJson = [Util gamePaymentOrderValueJaosnStringWithType:type];
-    
+    NSString *gameValueJson = [Util gamePaymentOrderValueJaosnStringWithType:type productId:productId];
+
     [[TulingGameSDKHelper sharedInstance] tlg_requestPaymentWithGameValueJson:gameValueJson];
 #endif
     

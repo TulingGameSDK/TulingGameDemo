@@ -25,7 +25,11 @@ typedef NS_ENUM(NSInteger, PaymentTestType){
 + (NSString *)gameRoleValueJaosnString;
 
 //游戏预订单生成，传参
-+ (NSString *)gamePaymentOrderValueJaosnStringWithType:(PaymentTestType)type;
++ (NSString *)gamePaymentOrderValueJaosnStringWithType:(PaymentTestType)type productId:(NSString *)productId;
+
+//IAP商品
++ (NSString *)productIDInIndex:(NSInteger)index;
+
 
 @end
 
