@@ -128,13 +128,17 @@ typedef void(^TLGPaymentStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameO
 -(void)tlg_requestPaymentWithGameValueJson:(NSString *)gameValueJson;
 
 
-
 /*! @brief 支付操作-针对IAP掉单处理(SDK根据游戏的版本号，出不同的支付操作)
  *
  * param gameOrderJson;          //订单信息
  */
 -(void)tlg_requestIAPWithGameOrderJson:(NSString *)gameOrderJson;
 
+
+/*! @brief IAP防丢单初始化操作（在拿到全部的角色信息之后，正式进入服务器后调用，启动补单操作）
+ *
+ */
+-(void)tlg_requestIAPOrderSuppoerCheck;
 
 
 /*! @brief 处理通过URL启动App时传递的数据[微*、支**支付状态回调]
