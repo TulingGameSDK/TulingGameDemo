@@ -122,7 +122,7 @@
                          @"10",@"roleLevel",
                          @"3",@"serverId",
                          @"魔兽世界-中国服",@"serverName",
-                         @"com.TulingGame.SDKDemo.pay6",@"productId",
+                         [self productIDWithIndex:0],@"productId",
                          @"游戏钻石",@"productName",
                          @"充值100金币-10元",@"payInfo",
                          @"1",@"productCount",
@@ -137,4 +137,22 @@
     return jsonString;
     
 }
+
++(NSString *)productIDWithIndex:(NSInteger)index{
+    NSArray *productArr= [[NSArray alloc] initWithObjects:
+                          @"com.TulingGame.SDKDemo.pay6",
+                          @"com.TulingGame.SDKDemo.pay18",
+                          @"com.TulingGame.SDKDemo.pay25",
+                          @"com.TulingGame.SDKDemo.pay40",
+                          @"com.TulingGame.SDKDemo.pay50",
+                          @"com.TulingGame.SDKDemo.pay88", nil];
+    
+    if (index < productArr.count) {
+        return productArr[index];
+    }else{
+        return @"com.TulingGame.SDKDemo.pay6"; //默认值
+    }
+}
+
+
 @end

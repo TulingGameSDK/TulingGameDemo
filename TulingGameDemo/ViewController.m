@@ -346,10 +346,19 @@ typedef NS_ENUM(NSInteger, ButtonType){
 //SDK本身会根据游戏的版本号，做后台开关，控制支付方式
 //此处type只为方便展示&测试内容，（SDKDemo本身app version设置了1.0.0是走三方，如果设置了2.0.0就走内购）
 -(void)setupSDKPaymentViewWithType:(PaymentTestType)type{
+    
+#if (TARGET_IPHONE_SIMULATOR)
+    // 在模拟器的情况下
+    NSLog(@"请在真机上进行IAP测试操作");
+#else
+    // 在真机情况下
     //游戏需要组装参数，向SDK传支付相关的参数
     NSString *gameValueJson = [Util gamePaymentOrderValueJaosnStringWithType:type];
     
     [[TulingGameSDKHelper sharedInstance] tlg_requestPaymentWithGameValueJson:gameValueJson];
+#endif
+    
+
 }
 
 #pragma mark -- 本地通知（登录状态）【主动登出、被动登出（token失效）】
