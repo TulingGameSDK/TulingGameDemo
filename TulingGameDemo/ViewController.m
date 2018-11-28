@@ -340,24 +340,33 @@ typedef NS_ENUM(NSInteger, ButtonType){
             //更新UI显示（游戏代码自己控制界面更新）
             [self updateUIWithLoginStatus:isSuccess];
             
-            //【进入服务器、创建角色、角色升级】3种情况，需要进行角色上报API调用
-            /*! @brief 角色上报类型
-             TLGGameRoleEventType_EneterServer         = 0,        // 进入服务器
-             TLGGameRoleEventType_CreateRole           = 1,        // 创建角色
-             TLGGameRoleEventType_UpgradeRoleLevel     = 2         // 角色升级
-             */
-            
-            TLGGameRoleEventType eventType = TLGGameRoleEventType_EneterServer; //举例
-            
-            [[TulingGameSDKHelper sharedInstance] tlg_reportGameRoleWithJsonString:[Util gameRoleValueJaosnString] eventType:TLGGameRoleEventType_EneterServer block:^(BOOL isSuccess, id errorMsg) {
-                NSLog(@"\n\n【图灵SDK角色上传回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\n\n",isSuccess,errorMsg);
+            //本地测试，延时操作
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 
-                if (eventType == TLGGameRoleEventType_EneterServer) {
-                    //进入服务器之后，才调用补单操作
-                    [[TulingGameSDKHelper sharedInstance] tlg_requestIAPOrderSuppoerCheck];
-                }
+                //【进入服务器、创建角色、角色升级、退出服务器】3种情况，需要调用上报API
+                /*! @brief 上报类型
+                 typedef NS_ENUM(NSInteger,TLGGameRoleEventType){
+                 TLGGameRoleEventType_EneterServer         = 0,        // 进入服务器
+                 TLGGameRoleEventType_CreateRole           = 1,        // 创建角色
+                 TLGGameRoleEventType_UpgradeRoleLevel     = 2,         // 角色升级
+                 TLGGameRoleEventType_QuitServer           = 3         // 退出服务器
+                 };
+                 */
                 
-            }];
+                TLGGameRoleEventType eventType = TLGGameRoleEventType_EneterServer; //测试举例
+                
+                [[TulingGameSDKHelper sharedInstance] tlg_reportGameRoleWithJsonString:[Util gameRoleValueJaosnString] eventType:TLGGameRoleEventType_EneterServer block:^(BOOL isSuccess, id errorMsg) {
+                    NSLog(@"\n\n【图灵SDK角色上传回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\n\n",isSuccess,errorMsg);
+                    
+                    if (eventType == TLGGameRoleEventType_EneterServer) {
+                        //进入服务器之后，才调用补单操作
+                        [[TulingGameSDKHelper sharedInstance] tlg_requestIAPOrderSupportCheckAfterEnterGameServer];
+                    }
+                    
+                }];
+
+            });
+            
             
         }else{
             
@@ -383,16 +392,10 @@ typedef NS_ENUM(NSInteger, ButtonType){
 //此处type只为方便展示&测试内容，（SDKDemo本身app version设置了1.0.0是走三方，如果设置了2.0.0就走内购）
 -(void)setupSDKPaymentViewWithType:(PaymentTestType)type productId:(NSString *)productId{
     
-#if (TARGET_IPHONE_SIMULATOR)
-    // 在模拟器的情况下
-    NSLog(@"请在真机上进行IAP测试操作");
-#else
-    // 在真机情况下
     //游戏需要组装参数，向SDK传支付相关的参数
     NSString *gameValueJson = [Util gamePaymentOrderValueJaosnStringWithType:type productId:productId];
-
+    
     [[TulingGameSDKHelper sharedInstance] tlg_requestPaymentWithGameValueJson:gameValueJson];
-#endif
     
 
 }

@@ -120,6 +120,7 @@
     //此处只是为了方便展示功能&测试，所以做了type操作判断，实际出包，请直接用【[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]】设置游戏版本号
     NSString *appVersion = @"";
     NSInteger amount;
+    NSString *orderId = @"";
     
     if (type == PaymentTestType_Threeparty) {
         appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
@@ -132,10 +133,17 @@
         amount = price.intValue * 100; //单位：分
     }
     
+    //模拟订单号
+    {
+        NSString *dateStr = [NSString stringWithFormat:@"%@",[self dateStringWithTimeStamp:[self timeStampOfDate:[NSDate date]] formatString:@"yyyy-MM-dd HH:mm:ss"]];
+        orderId = [NSString stringWithFormat:@"%ld|%@",(long)[[self amountWithProductID:productId] integerValue],dateStr];
+
+    }
+
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:
                          appVersion,@"gameVersion",
                          @(amount),@"amount",
-                         @"2018101034t445675767",@"orderId",
+                         orderId,@"orderId",
                          @"3456",@"roleId",
                          @"玩家角色名",@"roleName",
                          @"10",@"roleLevel",
@@ -162,6 +170,23 @@
     NSString *price = [productId stringByReplacingOccurrencesOfString:@"com.TulingGame.SDKDemo.pay" withString:@""];
     
     return price;
+}
+
++ (NSInteger)timeStampOfDate:(NSDate *)date{
+    
+    NSTimeInterval interval = [date timeIntervalSince1970]; //iOS原生得到秒级时间戳
+    NSInteger time;
+    time = (long)interval;
+    time = (long)interval*1;
+    return time;
+}
+//时间戳转换为时间方法
++ (NSString *)dateStringWithTimeStamp:(NSInteger)timeStamp formatString:(NSString *)formatString{
+    NSDate *tmpDate = [NSDate dateWithTimeIntervalSince1970:timeStamp];
+    NSDateFormatter *format=[[NSDateFormatter alloc] init];
+    [format setDateFormat:formatString];
+    NSString *dateString = [format stringFromDate:tmpDate];
+    return dateString;
 }
 
 

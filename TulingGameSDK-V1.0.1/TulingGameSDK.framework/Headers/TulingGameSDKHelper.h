@@ -14,7 +14,8 @@
 typedef NS_ENUM(NSInteger,TLGGameRoleEventType){
     TLGGameRoleEventType_EneterServer         = 0,        // 进入服务器
     TLGGameRoleEventType_CreateRole           = 1,        // 创建角色
-    TLGGameRoleEventType_UpgradeRoleLevel     = 2         // 角色升级
+    TLGGameRoleEventType_UpgradeRoleLevel     = 2,         // 角色升级
+    TLGGameRoleEventType_QuitServer           = 3         // 退出服务器
 };
 
 
@@ -64,8 +65,6 @@ typedef void(^TLGPaymentStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameO
  *
  */
 + (instancetype)sharedInstance;
-
--(void)tlg_paymentCallBack:(TLGPaymentStatusBlock)block;
 
 
 /** 登录初始化 **/
@@ -135,10 +134,15 @@ typedef void(^TLGPaymentStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameO
 -(void)tlg_requestIAPWithGameOrderJson:(NSString *)gameOrderJson;
 
 
-/*! @brief IAP防丢单初始化操作（在拿到全部的角色信息之后，正式进入服务器后调用，启动补单操作）
+/*! @brief IAP防丢单初始化操作（在拿到全部的角色信息之后，正式【进入服务器】后调用，启动补单操作）
  *
  */
--(void)tlg_requestIAPOrderSuppoerCheck;
+-(void)tlg_requestIAPOrderSupportCheckAfterEnterGameServer;
+
+/*! @brief 用户在游戏内，退出了服务器，但是没有退出登录的,单单退出了当前【区服】，需要调用本方法，去除IAP补单措施，再重新进入【区服】的s时候，重新调用tlg_requestIAPOrderSupportCheckAfterEnterGameServer初始化补单一次
+ *
+ */
+//-(void)tlg_reportIAPOrderSupportCloseAfterQuitGameServer;
 
 
 /*! @brief 处理通过URL启动App时传递的数据[微*、支**支付状态回调]
@@ -150,8 +154,13 @@ typedef void(^TLGPaymentStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameO
 -(BOOL)tlg_handleOpenURL:(NSURL *) url;
 
 
+/*! @brief 支付结果统一回调（三方+IAP）
+ *
+ */
+-(void)tlg_paymentCallBack:(TLGPaymentStatusBlock)block;
 
-/*! @brief 支付统一回调（IAP+三方）
+
+/*! @brief 注册全局的IAP操作监听(含丢单处理逻辑)
  *
  */
 -(void)tlg_registerIAPNotiWithBlock:(TLGGameOrderParamRequestBlcok)block;
