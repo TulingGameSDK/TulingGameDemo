@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		182E0EF5219D0FC500F36B2B /* TulingGameSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 182E0EF3219D0FC400F36B2B /* TulingGameSDK.framework */; };
-		182E0EF6219D0FC500F36B2B /* TulingGameSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 182E0EF4219D0FC400F36B2B /* TulingGameSDK.bundle */; };
 		182E0EF9219D100C00F36B2B /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 182E0EF7219D100C00F36B2B /* Util.m */; };
 		189D2F2B2161CC2B00355B87 /* iphonetime.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 189D2F2A2161CC2B00355B87 /* iphonetime.jpeg */; };
+		18EB70D621AFDA8300BA531E /* TulingGameSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 18EB70D421AFDA8300BA531E /* TulingGameSDK.bundle */; };
+		18EB70D721AFDA8300BA531E /* TulingGameSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18EB70D521AFDA8300BA531E /* TulingGameSDK.framework */; };
 		18FC7223215F26BC0034CF7A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FC7222215F26BC0034CF7A /* AppDelegate.m */; };
 		18FC7226215F26BC0034CF7A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FC7225215F26BC0034CF7A /* ViewController.m */; };
 		18FC722B215F26BD0034CF7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18FC722A215F26BD0034CF7A /* Assets.xcassets */; };
@@ -19,11 +19,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		182E0EF3219D0FC400F36B2B /* TulingGameSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TulingGameSDK.framework; sourceTree = "<group>"; };
-		182E0EF4219D0FC400F36B2B /* TulingGameSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TulingGameSDK.bundle; sourceTree = "<group>"; };
 		182E0EF7219D100C00F36B2B /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
 		182E0EF8219D100C00F36B2B /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		189D2F2A2161CC2B00355B87 /* iphonetime.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = iphonetime.jpeg; sourceTree = "<group>"; };
+		18EB70D421AFDA8300BA531E /* TulingGameSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TulingGameSDK.bundle; sourceTree = "<group>"; };
+		18EB70D521AFDA8300BA531E /* TulingGameSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TulingGameSDK.framework; sourceTree = "<group>"; };
 		18FC721E215F26BC0034CF7A /* TulingGameDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TulingGameDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18FC7221215F26BC0034CF7A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		18FC7222215F26BC0034CF7A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -40,7 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				182E0EF5219D0FC500F36B2B /* TulingGameSDK.framework in Frameworks */,
+				18EB70D721AFDA8300BA531E /* TulingGameSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,8 +50,8 @@
 		1814EC91217D5E0500C2389F /* TulingGameSDK-V1.0.1 */ = {
 			isa = PBXGroup;
 			children = (
-				182E0EF4219D0FC400F36B2B /* TulingGameSDK.bundle */,
-				182E0EF3219D0FC400F36B2B /* TulingGameSDK.framework */,
+				18EB70D421AFDA8300BA531E /* TulingGameSDK.bundle */,
+				18EB70D521AFDA8300BA531E /* TulingGameSDK.framework */,
 			);
 			path = "TulingGameSDK-V1.0.1";
 			sourceTree = "<group>";
@@ -151,7 +151,7 @@
 				189D2F2B2161CC2B00355B87 /* iphonetime.jpeg in Resources */,
 				18FC722B215F26BD0034CF7A /* Assets.xcassets in Resources */,
 				18FC724B215FC9080034CF7A /* Images.xcassets in Resources */,
-				182E0EF6219D0FC500F36B2B /* TulingGameSDK.bundle in Resources */,
+				18EB70D621AFDA8300BA531E /* TulingGameSDK.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
