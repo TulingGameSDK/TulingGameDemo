@@ -55,10 +55,15 @@
 }
 
 #pragma mark -- 三方支付APP回调
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_9_0
+/** iOS9及以上 */
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     return [[TulingGameSDKHelper sharedInstance] tlg_handleOpenURL:url];
 }
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+#endif
+/** iOS9以下 */
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     return [[TulingGameSDKHelper sharedInstance] tlg_handleOpenURL:url];
 }
 
