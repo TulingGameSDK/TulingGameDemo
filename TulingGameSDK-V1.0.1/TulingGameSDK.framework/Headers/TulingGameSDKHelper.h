@@ -44,7 +44,7 @@ typedef void(^TLGGameOrderParamRequestBlcok)(NSString *productID, NSString *pric
  * @param errorMsg  错误信息，如果是成功，错误信息为nil
  * @param gameOrderID 支付成功，会附带游戏的订单号,失败返回nil
  */
-typedef void(^TLGPaymentStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameOrderID);
+typedef void(^TLGPMStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameOrderID);
 
 @interface TulingGameSDKHelper : NSObject
 
@@ -124,7 +124,7 @@ typedef void(^TLGPaymentStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameO
  *
  * param gameValueJson;          //订单信息
  */
--(void)tlg_requestPaymentWithGameValueJson:(NSString *)gameValueJson;
+-(void)tlg_requestPMWithGameValueJson:(NSString *)gameValueJson;
 
 
 /*! @brief 支付操作-针对IAP掉单处理(SDK根据游戏的版本号，出不同的支付操作)
@@ -157,7 +157,7 @@ typedef void(^TLGPaymentStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameO
 /*! @brief 支付结果统一回调（三方+IAP）
  *
  */
--(void)tlg_paymentCallBack:(TLGPaymentStatusBlock)block;
+-(void)tlg_PMCallBack:(TLGPMStatusBlock)block;
 
 
 /*! @brief 注册全局的IAP操作监听(含丢单处理逻辑)

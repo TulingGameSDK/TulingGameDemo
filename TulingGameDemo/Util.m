@@ -95,7 +95,7 @@
 
 
 #pragma mark -- 游戏预订单生成，传参
-+ (NSString *)gamePaymentOrderValueJaosnStringWithType:(PaymentTestType)type productId:(NSString *)productId{
++ (NSString *)gamePMOrderValueJaosnStringWithType:(PMTestType)type productId:(NSString *)productId{
     
     /*! @brief 生成订单接口【请注意上传的字段格式】
      *
@@ -122,7 +122,7 @@
     NSInteger amount;
     NSString *orderId = @"";
     
-    if (type == PaymentTestType_Threeparty) {
+    if (type == PMTestType_Threeparty) {
         appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
         amount = 1; //0.01元
         

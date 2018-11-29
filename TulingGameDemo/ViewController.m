@@ -19,8 +19,8 @@ static const CGFloat kTotalBtnNum                              = 4;
 
 typedef NS_ENUM(NSInteger, ButtonType){
     ButtonType_ChangeAccount  = 0,    // 切换账号
-    ButtonType_Payment        = 1,    // 支付（SDK自身判断三方还是苹果内购）
-    ButtonType_Payment_IAP    = 2,    // 支付（SDK自身判断三方还是苹果内购）
+    ButtonType_PM        = 1,    // 支付（SDK自身判断三方还是苹果内购）
+    ButtonType_PM_IAP    = 2,    // 支付（SDK自身判断三方还是苹果内购）
     ButtonType_Logout         = 3,    // 退出游戏
     ButtonType_Login          = 4,    // 登录
 };
@@ -130,11 +130,11 @@ typedef NS_ENUM(NSInteger, ButtonType){
         {
             return @"切换账号";
         }break;
-        case ButtonType_Payment:
+        case ButtonType_PM:
         {
             return @"支付";
         }break;
-        case ButtonType_Payment_IAP:
+        case ButtonType_PM_IAP:
         {
             return @"苹果内购（仅供测试）";
         }break;
@@ -177,14 +177,14 @@ typedef NS_ENUM(NSInteger, ButtonType){
             
         }break;
             
-        case ButtonType_Payment:
+        case ButtonType_PM:
         {
             //支付
-            [self setupSDKPaymentViewWithType:PaymentTestType_Threeparty productId:@"com.TulingGame.SDKDemo.pay6"];
+            [self setupSDKPMViewWithType:PMTestType_Threeparty productId:@"com.TulingGame.SDKDemo.pay6"];
             
         }break;
             
-        case ButtonType_Payment_IAP:
+        case ButtonType_PM_IAP:
         {
             //内购，用于展示【内购】测试功能，实际不接入这个方法
             [self showProductList];
@@ -225,7 +225,7 @@ typedef NS_ENUM(NSInteger, ButtonType){
     
     if (buttonIndex <= 5) {
         //选择完，调起IAP支付
-        [self setupSDKPaymentViewWithType:PaymentTestType_IAP productId:[Util productIDInIndex:buttonIndex]];
+        [self setupSDKPMViewWithType:PMTestType_IAP productId:[Util productIDInIndex:buttonIndex]];
         
     }else{
         
@@ -390,12 +390,12 @@ typedef NS_ENUM(NSInteger, ButtonType){
 #pragma mark -- 支付
 //SDK本身会根据游戏的版本号，做后台开关，控制支付方式
 //此处type只为方便展示&测试内容，（SDKDemo本身app version设置了1.0.0是走三方，如果设置了2.0.0就走内购）
--(void)setupSDKPaymentViewWithType:(PaymentTestType)type productId:(NSString *)productId{
+-(void)setupSDKPMViewWithType:(PMTestType)type productId:(NSString *)productId{
     
     //游戏需要组装参数，向SDK传支付相关的参数
-    NSString *gameValueJson = [Util gamePaymentOrderValueJaosnStringWithType:type productId:productId];
+    NSString *gameValueJson = [Util gamePMOrderValueJaosnStringWithType:type productId:productId];
     
-    [[TulingGameSDKHelper sharedInstance] tlg_requestPaymentWithGameValueJson:gameValueJson];
+    [[TulingGameSDKHelper sharedInstance] tlg_requestPMWithGameValueJson:gameValueJson];
     
 
 }

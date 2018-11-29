@@ -38,7 +38,7 @@
         //SDK内部有判断当前登录的账户信息，内购凭证全部是跟SDK的userID挂钩并且本地h持久化存储（放丢单）
         //IAP防丢当操作方案:IAP先完成支付操作，支付成功之后（还没进行内购凭证的有效性验证），才向游戏请求gameOrderID，绑定订单号
         //苹果内购IAP：游戏根据SDK传过来的productID,price，重新组装当前时间点的订单相关参数，传给SDK
-        NSString *gameOrderJson = [Util gamePaymentOrderValueJaosnStringWithType:PaymentTestType_IAP productId:productID];
+        NSString *gameOrderJson = [Util gamePMOrderValueJaosnStringWithType:PMTestType_IAP productId:productID];
         
         //SDK开始绑定订单号，并且验证【内购凭证】
         [[TulingGameSDKHelper sharedInstance] tlg_requestIAPWithGameOrderJson:gameOrderJson];
@@ -46,7 +46,7 @@
     }];
     
     //支付结果回调（IAP+三方）
-    [[TulingGameSDKHelper sharedInstance] tlg_paymentCallBack:^(BOOL isSuccess, id errorMsg, NSString *gameOrderID) {
+    [[TulingGameSDKHelper sharedInstance] tlg_PMCallBack:^(BOOL isSuccess, id errorMsg, NSString *gameOrderID) {
         //支付结果(苹果内购-丢单部分重新下单)
         NSLog(@"\n\n【图灵SDK支付回调结果：】\nisSuccess:%d\nerrorMsg:%@\ngameOrderID:%@\n\n",isSuccess,errorMsg,gameOrderID);
     }];

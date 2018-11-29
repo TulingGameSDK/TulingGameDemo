@@ -10,9 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, PaymentTestType){
-    PaymentTestType_Threeparty  = 0,    // 三方
-    PaymentTestType_IAP         = 1,    // 内购
+typedef NS_ENUM(NSInteger, PMTestType){
+    PMTestType_Threeparty  = 0,    // 三方
+    PMTestType_IAP         = 1,    // 内购
 };
 
 
@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, PaymentTestType){
 + (NSString *)gameRoleValueJaosnString;
 
 //游戏预订单生成，传参
-+ (NSString *)gamePaymentOrderValueJaosnStringWithType:(PaymentTestType)type productId:(NSString *)productId;
++ (NSString *)gamePMOrderValueJaosnStringWithType:(PMTestType)type productId:(NSString *)productId;
 
 //IAP商品
 + (NSString *)productIDInIndex:(NSInteger)index;

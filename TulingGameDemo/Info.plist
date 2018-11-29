@@ -22,7 +22,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>wechat</string>
+			<string>w</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>p23.tulinggame.com</string>
@@ -32,7 +32,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>ali</string>
+			<string>a</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>p23.tulinggame.com</string>
