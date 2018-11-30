@@ -77,6 +77,7 @@
 }
 
 #pragma mark -- 商品ID列表（游戏需要根据自身的匹配相关的信息），需要同步修改【amountWithProductID】方法
+static NSString * const ReplacingStr = @"com.TulingGame.SDKDemo.pay"; //demo模拟数据，测试使用
 + (NSString *)productIDInIndex:(NSInteger)index{
     NSArray *array = [[NSArray alloc] initWithObjects:
                       @"com.TulingGame.SDKDemo.pay6",
@@ -167,7 +168,7 @@
 
 +(NSString *)amountWithProductID:(NSString *)productId{
     
-    NSString *price = [productId stringByReplacingOccurrencesOfString:@"com.TulingGame.SDKDemo.pay" withString:@""];
+    NSString *price = [productId stringByReplacingOccurrencesOfString:ReplacingStr withString:@""];
     
     return price;
 }

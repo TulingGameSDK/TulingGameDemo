@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		180E8B6921B0CBAA00004D13 /* SDKSingleObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 180E8B6821B0CBAA00004D13 /* SDKSingleObject.m */; };
 		182E0EF9219D100C00F36B2B /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 182E0EF7219D100C00F36B2B /* Util.m */; };
 		189D2F2B2161CC2B00355B87 /* iphonetime.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 189D2F2A2161CC2B00355B87 /* iphonetime.jpeg */; };
 		18EB70D621AFDA8300BA531E /* TulingGameSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 18EB70D421AFDA8300BA531E /* TulingGameSDK.bundle */; };
@@ -19,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		180E8B6721B0CBAA00004D13 /* SDKSingleObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDKSingleObject.h; sourceTree = "<group>"; };
+		180E8B6821B0CBAA00004D13 /* SDKSingleObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDKSingleObject.m; sourceTree = "<group>"; };
 		182E0EF7219D100C00F36B2B /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
 		182E0EF8219D100C00F36B2B /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		189D2F2A2161CC2B00355B87 /* iphonetime.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = iphonetime.jpeg; sourceTree = "<group>"; };
@@ -80,6 +83,8 @@
 				18FC7222215F26BC0034CF7A /* AppDelegate.m */,
 				18FC7224215F26BC0034CF7A /* ViewController.h */,
 				18FC7225215F26BC0034CF7A /* ViewController.m */,
+				180E8B6721B0CBAA00004D13 /* SDKSingleObject.h */,
+				180E8B6821B0CBAA00004D13 /* SDKSingleObject.m */,
 				182E0EF8219D100C00F36B2B /* Util.h */,
 				182E0EF7219D100C00F36B2B /* Util.m */,
 				18FC722A215F26BD0034CF7A /* Assets.xcassets */,
@@ -163,6 +168,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				18FC7226215F26BC0034CF7A /* ViewController.m in Sources */,
+				180E8B6921B0CBAA00004D13 /* SDKSingleObject.m in Sources */,
 				18FC7231215F26BD0034CF7A /* main.m in Sources */,
 				18FC7223215F26BC0034CF7A /* AppDelegate.m in Sources */,
 				182E0EF9219D100C00F36B2B /* Util.m in Sources */,

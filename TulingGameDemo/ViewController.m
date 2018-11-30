@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "Util.h" //本地测试的工具集合
+#import "SDKSingleObject.h"
 
 #import <TulingGameSDK/TulingGameSDK.h>
 
@@ -19,8 +20,8 @@ static const CGFloat kTotalBtnNum                              = 4;
 
 typedef NS_ENUM(NSInteger, ButtonType){
     ButtonType_ChangeAccount  = 0,    // 切换账号
-    ButtonType_PM        = 1,    // 支付（SDK自身判断三方还是苹果内购）
-    ButtonType_PM_IAP    = 2,    // 支付（SDK自身判断三方还是苹果内购）
+    ButtonType_PM             = 1,    // 支付（SDK自身判断三方还是苹果内购）
+    ButtonType_PM_IAP         = 2,    // 支付（SDK自身判断三方还是苹果内购）
     ButtonType_Logout         = 3,    // 退出游戏
     ButtonType_Login          = 4,    // 登录
 };
@@ -316,136 +317,37 @@ typedef NS_ENUM(NSInteger, ButtonType){
 
 }
 
+#pragma mark -- 更新UI界面
+-(void)setupNoti{
+    //根据登录状态，更新UI（demo展示）
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUI:) name:@"TLG_Game_UpdateLoginUI" object:nil];
+}
+
+-(void)updateUI:(NSNotification *)notification{
+    id notiBody = notification.object;
+    BOOL isLogined = [[notiBody objectForKey:@"isLogined"] boolValue];
+    [self updateUIWithLoginStatus:isLogined];
+}
 
 
-#pragma mark ************************* 以下为游戏CP需要接入代码部分 *************************
+#pragma mark ************************* 游戏操作部分，具体调用请参考【SingleObject单例】使用 *************************
 
 #pragma mark -- 登录
 -(void)setupSDKLoginView{
-    
-    [[TulingGameSDKHelper sharedInstance] tlg_requestLoginWithGameInitJson:[Util gameInitializationValueJaosnString] block:^(BOOL isSuccess, id errorMsg, NSString *sdkUserID, NSString *sdkToken) {
-        
-        NSLog(@"\n\n【图灵SDK登录回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\nuserId:%@\ntoken:%@\n\n",isSuccess,errorMsg,sdkUserID,sdkToken);
-        
-        if (isSuccess) {
-            
-            NSLog(@"\n\n\n\nTulingGameDemo-Block回调-登录成功");
-            NSLog(@"\n\n登录成功-Block回调数据\nuserId：%@\ntoken:%@",sdkUserID,sdkToken);
-            
-            //单例读取SDK本地的userid、token方法
-            if ([TulingGameSDKHelper sharedInstance].isLogin) {
-                NSLog(@"\n\n登录成功-SDK本地存储数据读取方法\nuserId：%@\ntoken:%@",[TulingGameSDKHelper sharedInstance].userId,[TulingGameSDKHelper sharedInstance].token);
-            }
-            
-            //更新UI显示（游戏代码自己控制界面更新）
-            [self updateUIWithLoginStatus:isSuccess];
-            
-            //本地测试，延时操作
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                
-                //【进入服务器、创建角色、角色升级、退出服务器】3种情况，需要调用上报API
-                /*! @brief 上报类型
-                 typedef NS_ENUM(NSInteger,TLGGameRoleEventType){
-                 TLGGameRoleEventType_EneterServer         = 0,        // 进入服务器
-                 TLGGameRoleEventType_CreateRole           = 1,        // 创建角色
-                 TLGGameRoleEventType_UpgradeRoleLevel     = 2,         // 角色升级
-                 TLGGameRoleEventType_QuitServer           = 3         // 退出服务器
-                 };
-                 */
-                
-                TLGGameRoleEventType eventType = TLGGameRoleEventType_EneterServer; //测试举例
-                
-                [[TulingGameSDKHelper sharedInstance] tlg_reportGameRoleWithJsonString:[Util gameRoleValueJaosnString] eventType:TLGGameRoleEventType_EneterServer block:^(BOOL isSuccess, id errorMsg) {
-                    NSLog(@"\n\n【图灵SDK角色上传回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\n\n",isSuccess,errorMsg);
-                    
-                    if (eventType == TLGGameRoleEventType_EneterServer) {
-                        //进入服务器之后，才调用补单操作
-                        [[TulingGameSDKHelper sharedInstance] tlg_requestIAPOrderSupportCheckAfterEnterGameServer];
-                    }
-                    
-                }];
-
-            });
-            
-            
-        }else{
-            
-        }
-    }];
+    [[SDKSingleObject sharedInstance] sdkLoginView];
 }
 
 #pragma mark -- 登出
 -(void)logout{
-    //主动登出
-    [[TulingGameSDKHelper sharedInstance] tlg_reportGameLogoutWithBlock:^(BOOL isSuccessLogout) {
-        
-        [self updateUIWithLoginStatus:!isSuccessLogout];
-        
-        NSLog(@"TulingGameDemo-Block回调-主动登出成功");
-        
-    }];
-    
+    [[SDKSingleObject sharedInstance] sdkLogout];
 }
 
 #pragma mark -- 支付
 //SDK本身会根据游戏的版本号，做后台开关，控制支付方式
-//此处type只为方便展示&测试内容，（SDKDemo本身app version设置了1.0.0是走三方，如果设置了2.0.0就走内购）
+//此处type只为方便展示&测试内容，（SDKDemo本身app version设置了0.0.1是走三方，如果设置了1.0.0就走内购）
 -(void)setupSDKPMViewWithType:(PMTestType)type productId:(NSString *)productId{
-    
-    //游戏需要组装参数，向SDK传支付相关的参数
-    NSString *gameValueJson = [Util gamePMOrderValueJaosnStringWithType:type productId:productId];
-    
-    [[TulingGameSDKHelper sharedInstance] tlg_requestPMWithGameValueJson:gameValueJson];
-    
-
+    [[SDKSingleObject sharedInstance] sdkPMViewWithType:type productId:productId];
 }
-
-#pragma mark -- 本地通知（登录状态）【主动登出、被动登出（token失效）】
--(void)setupNoti{
-    // 注册通知监听- 强制登出
-    // 例如:当前账号token失效，账号被SDK强制下线
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logoutNotification:) name:@"TLG_Notification_Logout" object:nil];
-    
-    // 注册通知监听-某些情况SDK需要强制调起登录框
-    // 例如：SDK内修改密码成功，需要强制调起一次登录框进行重新登录操作
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showLoginViewNotification:) name:@"TLG_Notification_ShowLoginView" object:nil];
-    
-}
-
--(void)logoutNotification:(NSNotification *)notification{
-    /*
-     * 主要返回登出的回调【主动&被动】，针对一些被动登出情况，做处理
-     * YES:主动登出
-     * NO:被动登出
-     */
-    id notiBody = notification.object;
-    
-    BOOL isActiveLogout = [[notiBody objectForKey:@"activeLogout"] boolValue];
-    
-    if (!isActiveLogout) {
-        NSLog(@"TulingGameDemo-本地通知方式-被动登出成功");
-    }
-    
-    /*
-     if (isActiveLogout) {
-     //主动登出【block回调&本地通知回调，监听处理其中之一即可】
-     NSLog(@"TulingGameDemo-本地通知方式-被动登出成功");
-     
-     }else{
-     //被动登出
-     NSLog(@"TulingGameDemo-本地通知方式-被动登出成功");
-     }
-     */
-}
-
--(void)showLoginViewNotification:(NSNotification *)notification{
-    
-    NSLog(@"TulingGameDemo-本地通知方式-SDK强制调起登录框");
-    
-    //显示登录框
-    [self setupSDKLoginView];
-}
-
 
 
 @end
