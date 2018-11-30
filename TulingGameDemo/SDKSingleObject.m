@@ -77,49 +77,19 @@
 }
 
 
-#pragma mark -- IAP注册监听 & 支付结果回调
-- (void)setupPMCorrelationAction{
-    //【图灵SDK】注册全局的IAP操作监听(含丢单处理逻辑)
-    [[TulingGameSDKHelper sharedInstance] tlg_registerIAPNotiWithBlock:^(NSString *productID, NSString *price, NSString *sdkUserID) {
-        
-        //游戏重新向SDK传支付订单参数
-        //SDK内部有判断当前登录的账户信息，内购凭证全部是跟SDK的userID挂钩并且本地h持久化存储（放丢单）
-        //IAP防丢当操作方案:IAP先完成支付操作，支付成功之后（还没进行内购凭证的有效性验证），才向游戏请求gameOrderID，绑定订单号
-        //苹果内购IAP：游戏根据SDK传过来的productID,price，重新组装当前时间点的订单相关参数，传给SDK
-        NSString *gameOrderJson = [Util gamePMOrderValueJaosnStringWithType:PMTestType_IAP productId:productID];
-        
-        //SDK开始绑定订单号，并且验证【内购凭证】
-        [[TulingGameSDKHelper sharedInstance] tlg_requestIAPWithGameOrderJson:gameOrderJson];
-        
-    }];
-    
-    //支付结果回调（IAP+三方）
-    [[TulingGameSDKHelper sharedInstance] tlg_PMCallBack:^(BOOL isSuccess, id errorMsg, NSString *gameOrderID) {
-        //支付结果(苹果内购-丢单部分重新下单)
-        NSLog(@"\n\n【图灵SDK支付回调结果：】\nisSuccess:%d\nerrorMsg:%@\ngameOrderID:%@\n\n",isSuccess,errorMsg,gameOrderID);
-    }];
-    
-}
-
-#pragma mark -- 三方支付APP响应方法
--(BOOL)sdkHandleOpenURL:(NSURL *) url{
-    return [[TulingGameSDKHelper sharedInstance] tlg_handleOpenURL:url];
-}
-
-
 #pragma mark -- 登录
 -(void)sdkLoginView{
     
     [[TulingGameSDKHelper sharedInstance] tlg_requestLoginWithGameInitJson:[Util gameInitializationValueJaosnString] block:^(BOOL isSuccess, id errorMsg, NSString *sdkUserID, NSString *sdkToken) {
         
-        NSLog(@"\n\n【图灵SDK登录回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\nuserId:%@\ntoken:%@\n\n",isSuccess,errorMsg,sdkUserID,sdkToken);
+        NSLog(@"\n\n【图灵SDK登录，统一回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\nuserId:%@\ntoken:%@\n\n",isSuccess,errorMsg,sdkUserID,sdkToken);
         
         if (isSuccess) {
             
             NSLog(@"\n\n\n\nTulingGameDemo-Block回调-登录成功");
             NSLog(@"\n\n登录成功-Block回调数据\nuserId：%@\ntoken:%@",sdkUserID,sdkToken);
             
-            //单例读取SDK本地的userid、token方法（此处做调用举例展示，实际接入游戏，游戏代码自己控制界面更新）
+            //单例读取SDK本地的userid、token方法（此处做调用举例展示，实际接入游戏，按需调整）
             if ([TulingGameSDKHelper sharedInstance].isLogin) {
                 NSLog(@"\n\n登录成功-SDK本地存储数据读取方法\nuserId：%@\ntoken:%@",[TulingGameSDKHelper sharedInstance].userId,[TulingGameSDKHelper sharedInstance].token);
             }
@@ -152,10 +122,10 @@
          */
         
         [[TulingGameSDKHelper sharedInstance] tlg_reportGameRoleWithJsonString:[Util gameRoleValueJaosnString] eventType:TLGGameRoleEventType_EneterServer block:^(BOOL isSuccess, id errorMsg) {
-            NSLog(@"\n\n【图灵SDK角色上传回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\n\n",isSuccess,errorMsg);
+            NSLog(@"\n\n【图灵SDK角色上传，统一回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\n\n",isSuccess,errorMsg);
             
             if (type == TLGGameRoleEventType_EneterServer) {
-                //进入服务器之后，才调用补单操作
+                //进入服务器之后，才调用补单操作（此处做调用举例展示，实际接入游戏，请按相关位置调用处理）
                 [[TulingGameSDKHelper sharedInstance] tlg_requestIAPOrderSupportCheckAfterEnterGameServer];
             }
             
@@ -183,8 +153,36 @@
     
     [[TulingGameSDKHelper sharedInstance] tlg_requestPMWithGameValueJson:gameValueJson];
     
+}
+
+
+#pragma mark -- IAP注册监听 & 支付结果回调
+- (void)setupPMCorrelationAction{
+    //【图灵SDK】注册全局的IAP操作监听(含丢单处理逻辑)
+    [[TulingGameSDKHelper sharedInstance] tlg_registerIAPNotiWithBlock:^(NSString *productID, NSString *price, NSString *sdkUserID) {
+        
+        //游戏重新向SDK传支付订单参数
+        //SDK内部有判断当前登录的账户信息，内购凭证全部是跟SDK的userID挂钩并且本地h持久化存储（放丢单）
+        //IAP防丢当操作方案:IAP先完成支付操作，支付成功之后（还没进行内购凭证的有效性验证），才向游戏请求gameOrderID，绑定订单号
+        //苹果内购IAP：游戏根据SDK传过来的productID,price，重新组装当前时间点的订单相关参数，传给SDK
+        NSString *gameOrderJson = [Util gamePMOrderValueJaosnStringWithType:PMTestType_IAP productId:productID];
+        
+        //SDK开始绑定订单号，并且验证【内购凭证】
+        [[TulingGameSDKHelper sharedInstance] tlg_requestIAPWithGameOrderJson:gameOrderJson];
+        
+    }];
+    
+    //支付结果回调（IAP+三方）
+    [[TulingGameSDKHelper sharedInstance] tlg_PMCallBack:^(BOOL isSuccess, id errorMsg, NSString *gameOrderID) {
+        //支付结果(苹果内购-丢单部分重新下单)
+        NSLog(@"\n\n【图灵SDK支付，统一回调结果：】\nisSuccess:%d\nerrorMsg:%@\ngameOrderID:%@\n\n",isSuccess,errorMsg,gameOrderID);
+    }];
     
 }
 
+#pragma mark -- 三方支付APP响应方法
+-(BOOL)sdkHandleOpenURL:(NSURL *) url{
+    return [[TulingGameSDKHelper sharedInstance] tlg_handleOpenURL:url];
+}
 
 @end
