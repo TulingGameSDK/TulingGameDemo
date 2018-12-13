@@ -10,9 +10,9 @@
 		182E0E6D219C271400F36B2B /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 182E0E6C219C271400F36B2B /* Util.m */; };
 		189D2F2B2161CC2B00355B87 /* iphonetime.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 189D2F2A2161CC2B00355B87 /* iphonetime.jpeg */; };
 		18E9D6E321C108200003D3EC /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18D4413B218991EF001DE4C1 /* StoreKit.framework */; };
-		18E9D6FB21C1129E0003D3EC /* VendoredSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18E9D6F821C1129E0003D3EC /* VendoredSDK.framework */; };
-		18E9D6FC21C1129E0003D3EC /* TulingGameSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 18E9D6F921C1129E0003D3EC /* TulingGameSDK.bundle */; };
-		18E9D6FD21C1129E0003D3EC /* TulingGameSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18E9D6FA21C1129E0003D3EC /* TulingGameSDK.framework */; };
+		18E9D71A21C20EDE0003D3EC /* VendoredSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18E9D71721C20EDD0003D3EC /* VendoredSDK.framework */; };
+		18E9D71B21C20EDE0003D3EC /* TulingGameSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 18E9D71821C20EDD0003D3EC /* TulingGameSDK.bundle */; };
+		18E9D71C21C20EDE0003D3EC /* TulingGameSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18E9D71921C20EDE0003D3EC /* TulingGameSDK.framework */; };
 		18EB70DE21AFF07C00BA531E /* SDKSingleObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EB70DD21AFF07C00BA531E /* SDKSingleObject.m */; };
 		18FC7223215F26BC0034CF7A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FC7222215F26BC0034CF7A /* AppDelegate.m */; };
 		18FC7226215F26BC0034CF7A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FC7225215F26BC0034CF7A /* ViewController.m */; };
@@ -27,9 +27,9 @@
 		189D2F2A2161CC2B00355B87 /* iphonetime.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = iphonetime.jpeg; sourceTree = "<group>"; };
 		18D4413B218991EF001DE4C1 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		18D4413D21899222001DE4C1 /* TulingGameDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TulingGameDemo.entitlements; sourceTree = "<group>"; };
-		18E9D6F821C1129E0003D3EC /* VendoredSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VendoredSDK.framework; sourceTree = "<group>"; };
-		18E9D6F921C1129E0003D3EC /* TulingGameSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TulingGameSDK.bundle; sourceTree = "<group>"; };
-		18E9D6FA21C1129E0003D3EC /* TulingGameSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TulingGameSDK.framework; sourceTree = "<group>"; };
+		18E9D71721C20EDD0003D3EC /* VendoredSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VendoredSDK.framework; sourceTree = "<group>"; };
+		18E9D71821C20EDD0003D3EC /* TulingGameSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TulingGameSDK.bundle; sourceTree = "<group>"; };
+		18E9D71921C20EDE0003D3EC /* TulingGameSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TulingGameSDK.framework; sourceTree = "<group>"; };
 		18EB70DC21AFF07C00BA531E /* SDKSingleObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDKSingleObject.h; sourceTree = "<group>"; };
 		18EB70DD21AFF07C00BA531E /* SDKSingleObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDKSingleObject.m; sourceTree = "<group>"; };
 		18FC721E215F26BC0034CF7A /* TulingGameDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TulingGameDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -48,8 +48,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18E9D6FD21C1129E0003D3EC /* TulingGameSDK.framework in Frameworks */,
-				18E9D6FB21C1129E0003D3EC /* VendoredSDK.framework in Frameworks */,
+				18E9D71C21C20EDE0003D3EC /* TulingGameSDK.framework in Frameworks */,
+				18E9D71A21C20EDE0003D3EC /* VendoredSDK.framework in Frameworks */,
 				18E9D6E321C108200003D3EC /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -60,9 +60,9 @@
 		1814EC98217DE81800C2389F /* TulingGameSDK */ = {
 			isa = PBXGroup;
 			children = (
-				18E9D6F921C1129E0003D3EC /* TulingGameSDK.bundle */,
-				18E9D6FA21C1129E0003D3EC /* TulingGameSDK.framework */,
-				18E9D6F821C1129E0003D3EC /* VendoredSDK.framework */,
+				18E9D71821C20EDD0003D3EC /* TulingGameSDK.bundle */,
+				18E9D71921C20EDE0003D3EC /* TulingGameSDK.framework */,
+				18E9D71721C20EDD0003D3EC /* VendoredSDK.framework */,
 			);
 			path = TulingGameSDK;
 			sourceTree = "<group>";
@@ -182,7 +182,7 @@
 				189D2F2B2161CC2B00355B87 /* iphonetime.jpeg in Resources */,
 				18FC722B215F26BD0034CF7A /* Assets.xcassets in Resources */,
 				18FC724B215FC9080034CF7A /* Images.xcassets in Resources */,
-				18E9D6FC21C1129E0003D3EC /* TulingGameSDK.bundle in Resources */,
+				18E9D71B21C20EDE0003D3EC /* TulingGameSDK.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,7 +326,10 @@
 				CODE_SIGN_ENTITLEMENTS = TulingGameDemo/TulingGameDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 65TV3R7SHH;
-				FRAMEWORK_SEARCH_PATHS = "\"$(PROJECT_DIR)/TulingGameSDK\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(PROJECT_DIR)/TulingGameSDK\"",
+					"$(PROJECT_DIR)/TulingGameSDK",
+				);
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/TulingGameSDK/TulingGameSDK.framework/Headers\"",
 					"\"$(SRCROOT)/TulingGameSDK/VendoredSDK.framework/Headers\"",
@@ -352,7 +355,10 @@
 				CODE_SIGN_ENTITLEMENTS = TulingGameDemo/TulingGameDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 65TV3R7SHH;
-				FRAMEWORK_SEARCH_PATHS = "\"$(PROJECT_DIR)/TulingGameSDK\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(PROJECT_DIR)/TulingGameSDK\"",
+					"$(PROJECT_DIR)/TulingGameSDK",
+				);
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/TulingGameSDK/TulingGameSDK.framework/Headers\"",
 					"\"$(SRCROOT)/TulingGameSDK/VendoredSDK.framework/Headers\"",
