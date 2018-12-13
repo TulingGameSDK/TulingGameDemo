@@ -181,7 +181,7 @@ typedef NS_ENUM(NSInteger, ButtonType){
         case ButtonType_PM:
         {
             //支付
-            [self setupSDKPMViewWithType:PMTestType_Threeparty productId:@"com.TulingGame.SDKDemo.pay6"];
+            [self setupSDKPMViewWithType:PMTestType_Threeparty productId:[Util productIDInIndex:0]];
             
         }break;
             
@@ -215,16 +215,14 @@ typedef NS_ENUM(NSInteger, ButtonType){
                                   [Util productIDInIndex:0],
                                   [Util productIDInIndex:1],
                                   [Util productIDInIndex:2],
-                                  [Util productIDInIndex:3],
-                                  [Util productIDInIndex:4],
-                                  [Util productIDInIndex:5],nil];
+                                  [Util productIDInIndex:3],nil];
     actionSheet.actionSheetStyle = UIBarStyleDefault;
     [actionSheet showInView:self.view];
 }
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     
-    if (buttonIndex <= 5) {
+    if (buttonIndex <= 3) {
         //选择完，调起IAP支付
         [self setupSDKPMViewWithType:PMTestType_IAP productId:[Util productIDInIndex:buttonIndex]];
         

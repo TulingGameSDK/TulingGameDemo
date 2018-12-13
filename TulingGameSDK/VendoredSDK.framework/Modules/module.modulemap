@@ -1,0 +1,6 @@
+framework module VendoredSDK {
+  umbrella header "VendoredSDK.h"
+
+  export *
+  module * { export * }
+}

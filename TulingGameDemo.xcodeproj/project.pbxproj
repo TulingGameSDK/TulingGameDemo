@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		180E8B6921B0CBAA00004D13 /* SDKSingleObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 180E8B6821B0CBAA00004D13 /* SDKSingleObject.m */; };
-		182E0EF9219D100C00F36B2B /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 182E0EF7219D100C00F36B2B /* Util.m */; };
+		182E0E6D219C271400F36B2B /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 182E0E6C219C271400F36B2B /* Util.m */; };
 		189D2F2B2161CC2B00355B87 /* iphonetime.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 189D2F2A2161CC2B00355B87 /* iphonetime.jpeg */; };
-		18EB70D621AFDA8300BA531E /* TulingGameSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 18EB70D421AFDA8300BA531E /* TulingGameSDK.bundle */; };
-		18EB70D721AFDA8300BA531E /* TulingGameSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18EB70D521AFDA8300BA531E /* TulingGameSDK.framework */; };
+		18E9D6E321C108200003D3EC /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18D4413B218991EF001DE4C1 /* StoreKit.framework */; };
+		18E9D6FB21C1129E0003D3EC /* VendoredSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18E9D6F821C1129E0003D3EC /* VendoredSDK.framework */; };
+		18E9D6FC21C1129E0003D3EC /* TulingGameSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 18E9D6F921C1129E0003D3EC /* TulingGameSDK.bundle */; };
+		18E9D6FD21C1129E0003D3EC /* TulingGameSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18E9D6FA21C1129E0003D3EC /* TulingGameSDK.framework */; };
+		18EB70DE21AFF07C00BA531E /* SDKSingleObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EB70DD21AFF07C00BA531E /* SDKSingleObject.m */; };
 		18FC7223215F26BC0034CF7A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FC7222215F26BC0034CF7A /* AppDelegate.m */; };
 		18FC7226215F26BC0034CF7A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FC7225215F26BC0034CF7A /* ViewController.m */; };
 		18FC722B215F26BD0034CF7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18FC722A215F26BD0034CF7A /* Assets.xcassets */; };
@@ -20,13 +22,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		180E8B6721B0CBAA00004D13 /* SDKSingleObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDKSingleObject.h; sourceTree = "<group>"; };
-		180E8B6821B0CBAA00004D13 /* SDKSingleObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDKSingleObject.m; sourceTree = "<group>"; };
-		182E0EF7219D100C00F36B2B /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
-		182E0EF8219D100C00F36B2B /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+		182E0E6B219C271400F36B2B /* Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+		182E0E6C219C271400F36B2B /* Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
 		189D2F2A2161CC2B00355B87 /* iphonetime.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = iphonetime.jpeg; sourceTree = "<group>"; };
-		18EB70D421AFDA8300BA531E /* TulingGameSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TulingGameSDK.bundle; sourceTree = "<group>"; };
-		18EB70D521AFDA8300BA531E /* TulingGameSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TulingGameSDK.framework; sourceTree = "<group>"; };
+		18D4413B218991EF001DE4C1 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		18D4413D21899222001DE4C1 /* TulingGameDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TulingGameDemo.entitlements; sourceTree = "<group>"; };
+		18E9D6F821C1129E0003D3EC /* VendoredSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VendoredSDK.framework; sourceTree = "<group>"; };
+		18E9D6F921C1129E0003D3EC /* TulingGameSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TulingGameSDK.bundle; sourceTree = "<group>"; };
+		18E9D6FA21C1129E0003D3EC /* TulingGameSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TulingGameSDK.framework; sourceTree = "<group>"; };
+		18EB70DC21AFF07C00BA531E /* SDKSingleObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDKSingleObject.h; sourceTree = "<group>"; };
+		18EB70DD21AFF07C00BA531E /* SDKSingleObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDKSingleObject.m; sourceTree = "<group>"; };
 		18FC721E215F26BC0034CF7A /* TulingGameDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TulingGameDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18FC7221215F26BC0034CF7A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		18FC7222215F26BC0034CF7A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -43,28 +48,40 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18EB70D721AFDA8300BA531E /* TulingGameSDK.framework in Frameworks */,
+				18E9D6FD21C1129E0003D3EC /* TulingGameSDK.framework in Frameworks */,
+				18E9D6FB21C1129E0003D3EC /* VendoredSDK.framework in Frameworks */,
+				18E9D6E321C108200003D3EC /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1814EC91217D5E0500C2389F /* TulingGameSDK-V1.0.1 */ = {
+		1814EC98217DE81800C2389F /* TulingGameSDK */ = {
 			isa = PBXGroup;
 			children = (
-				18EB70D421AFDA8300BA531E /* TulingGameSDK.bundle */,
-				18EB70D521AFDA8300BA531E /* TulingGameSDK.framework */,
+				18E9D6F921C1129E0003D3EC /* TulingGameSDK.bundle */,
+				18E9D6FA21C1129E0003D3EC /* TulingGameSDK.framework */,
+				18E9D6F821C1129E0003D3EC /* VendoredSDK.framework */,
 			);
-			path = "TulingGameSDK-V1.0.1";
+			path = TulingGameSDK;
+			sourceTree = "<group>";
+		};
+		18D4413A218991EF001DE4C1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				18D4413B218991EF001DE4C1 /* StoreKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		18FC7215215F26BC0034CF7A = {
 			isa = PBXGroup;
 			children = (
-				1814EC91217D5E0500C2389F /* TulingGameSDK-V1.0.1 */,
+				1814EC98217DE81800C2389F /* TulingGameSDK */,
 				18FC7220215F26BC0034CF7A /* TulingGameDemo */,
 				18FC721F215F26BC0034CF7A /* Products */,
+				18D4413A218991EF001DE4C1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -79,14 +96,15 @@
 		18FC7220215F26BC0034CF7A /* TulingGameDemo */ = {
 			isa = PBXGroup;
 			children = (
+				18D4413D21899222001DE4C1 /* TulingGameDemo.entitlements */,
 				18FC7221215F26BC0034CF7A /* AppDelegate.h */,
 				18FC7222215F26BC0034CF7A /* AppDelegate.m */,
 				18FC7224215F26BC0034CF7A /* ViewController.h */,
 				18FC7225215F26BC0034CF7A /* ViewController.m */,
-				180E8B6721B0CBAA00004D13 /* SDKSingleObject.h */,
-				180E8B6821B0CBAA00004D13 /* SDKSingleObject.m */,
-				182E0EF8219D100C00F36B2B /* Util.h */,
-				182E0EF7219D100C00F36B2B /* Util.m */,
+				18EB70DC21AFF07C00BA531E /* SDKSingleObject.h */,
+				18EB70DD21AFF07C00BA531E /* SDKSingleObject.m */,
+				182E0E6B219C271400F36B2B /* Util.h */,
+				182E0E6C219C271400F36B2B /* Util.m */,
 				18FC722A215F26BD0034CF7A /* Assets.xcassets */,
 				18FC722F215F26BD0034CF7A /* Info.plist */,
 				18FC7230215F26BD0034CF7A /* main.m */,
@@ -127,6 +145,14 @@
 				TargetAttributes = {
 					18FC721D215F26BC0034CF7A = {
 						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -156,7 +182,7 @@
 				189D2F2B2161CC2B00355B87 /* iphonetime.jpeg in Resources */,
 				18FC722B215F26BD0034CF7A /* Assets.xcassets in Resources */,
 				18FC724B215FC9080034CF7A /* Images.xcassets in Resources */,
-				18EB70D621AFDA8300BA531E /* TulingGameSDK.bundle in Resources */,
+				18E9D6FC21C1129E0003D3EC /* TulingGameSDK.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,10 +194,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				18FC7226215F26BC0034CF7A /* ViewController.m in Sources */,
-				180E8B6921B0CBAA00004D13 /* SDKSingleObject.m in Sources */,
 				18FC7231215F26BD0034CF7A /* main.m in Sources */,
 				18FC7223215F26BC0034CF7A /* AppDelegate.m in Sources */,
-				182E0EF9219D100C00F36B2B /* Util.m in Sources */,
+				18EB70DE21AFF07C00BA531E /* SDKSingleObject.m in Sources */,
+				182E0E6D219C271400F36B2B /* Util.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,6 +239,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -272,6 +299,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -295,12 +323,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = TulingGameDemo/TulingGameDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3YX2L37MXK;
-				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/TulingGameSDK-V1.0.1",
+				DEVELOPMENT_TEAM = 65TV3R7SHH;
+				FRAMEWORK_SEARCH_PATHS = "\"$(PROJECT_DIR)/TulingGameSDK\"";
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/TulingGameSDK/TulingGameSDK.framework/Headers\"",
+					"\"$(SRCROOT)/TulingGameSDK/VendoredSDK.framework/Headers\"",
 				);
 				INFOPLIST_FILE = TulingGameDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -309,7 +338,7 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.TulingGame.SDKDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tuling.SDKDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -320,12 +349,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = TulingGameDemo/TulingGameDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3YX2L37MXK;
-				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/TulingGameSDK-V1.0.1",
+				DEVELOPMENT_TEAM = 65TV3R7SHH;
+				FRAMEWORK_SEARCH_PATHS = "\"$(PROJECT_DIR)/TulingGameSDK\"";
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/TulingGameSDK/TulingGameSDK.framework/Headers\"",
+					"\"$(SRCROOT)/TulingGameSDK/VendoredSDK.framework/Headers\"",
 				);
 				INFOPLIST_FILE = TulingGameDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -334,7 +364,7 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.TulingGame.SDKDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tuling.SDKDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

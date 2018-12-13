@@ -37,46 +37,6 @@
 
 #pragma mark ************************* 以下为游戏CP需要接入代码部分 *************************
 
-#pragma mark -- 登出状态回调
-//注册登出监听
-- (void)setupLogoutNoti{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logoutNotification:) name:@"TLG_Notification_Logout" object:nil];
-}
-
--(void)logoutNotification:(NSNotification *)notification{
-    /*
-     * 主要返回登出的回调【主动&被动】，针对一些被动登出情况，做处理
-     * YES:主动登出
-     * NO:被动登出
-     */
-    id notiBody = notification.object;
-    
-    BOOL isActiveLogout = [[notiBody objectForKey:@"activeLogout"] boolValue];
-    BOOL isSuccessLogout = [[notiBody objectForKey:@"result"] boolValue];
-    
-    if (isSuccessLogout) {
-        if (isActiveLogout) {
-            //主动登出【block回调&本地通知回调，监听处理其中之一即可】
-            NSLog(@"TulingGameDemo-本地通知方式-主动登出成功");
-            
-        }else{
-            //被动登出
-            NSLog(@"TulingGameDemo-本地通知方式-被动登出成功");
-        }
-        
-        //登出之后，要强制回到SDK的登录页面(此处做调用举例展示，实际接入游戏,按需调整)
-        [self postLoginStatusWithLoginStatus:!isSuccessLogout];
-        
-        //显示登录框(此处做调用举例展示，实际接入游戏,按需调整)
-//        [[SDKSingleObject sharedInstance] sdkLoginView];
-
-    }else{
-        NSLog(@"SDK服务器，退出登录API失败");
-    }
-    
-}
-
-
 #pragma mark -- 登录
 -(void)sdkLoginView{
     
@@ -91,7 +51,7 @@
             
             //单例读取SDK本地的userid、token方法（此处做调用举例展示，实际接入游戏，按需调整）
             if ([TulingGameSDKHelper sharedInstance].isLogin) {
-                NSLog(@"\n\n登录成功-SDK本地存储数据读取方法\nuserId：%@\ntoken:%@",[TulingGameSDKHelper sharedInstance].userId,[TulingGameSDKHelper sharedInstance].token);
+                NSLog(@"\n\n登录成功-SDK本地存储数据读取方法\nuserId：%@\ntoken:%@",[TulingGameSDKHelper sharedInstance].sdkUserId,[TulingGameSDKHelper sharedInstance].sdkToken);
             }
             
             //更新UI显示（此处做调用举例展示，实际接入游戏，游戏代码自己控制界面更新）
@@ -142,6 +102,47 @@
     
 }
 
+
+#pragma mark -- 登出状态回调
+//注册登出监听
+- (void)setupLogoutNoti{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logoutNotification:) name:@"TLG_Notification_Logout" object:nil];
+}
+-(void)logoutNotification:(NSNotification *)notification{
+    /*
+     * 主要返回登出的回调【主动&被动】，针对一些被动登出情况，做处理
+     * YES:主动登出
+     * NO:被动登出
+     */
+    id notiBody = notification.object;
+    
+    BOOL isActiveLogout = [[notiBody objectForKey:@"activeLogout"] boolValue];
+    BOOL isSuccessLogout = [[notiBody objectForKey:@"result"] boolValue];
+    
+    if (isSuccessLogout) {
+        if (isActiveLogout) {
+            //主动登出【block回调&本地通知回调，监听处理其中之一即可】
+            NSLog(@"TulingGameDemo-本地通知方式-主动登出成功");
+            
+        }else{
+            //被动登出
+            NSLog(@"TulingGameDemo-本地通知方式-被动登出成功");
+        }
+        
+        //登出之后，要强制回到SDK的登录页面(此处做调用举例展示，实际接入游戏,按需调整)
+        [self postLoginStatusWithLoginStatus:!isSuccessLogout];
+        
+        //显示登录框(此处做调用举例展示，实际接入游戏,按需调整)
+        //        [[SDKSingleObject sharedInstance] sdkLoginView];
+        
+    }else{
+        NSLog(@"SDK服务器，退出登录API失败");
+    }
+    
+}
+
+
+
 #pragma mark -- 支付（三方+IAP）
 -(void)sdkPMViewWithType:(PMTestType)type productId:(NSString *)productId{
     
@@ -156,9 +157,11 @@
 }
 
 
-#pragma mark -- IAP注册监听 & 支付结果回调
+#pragma mark -- IAP注册监听 & 支付（三方+IAP）结果-统一回调
 - (void)setupPMCorrelationAction{
+    
     //【图灵SDK】注册全局的IAP操作监听(含丢单处理逻辑)
+    //得到productID，【price暂时还没有返回，以后会更新】
     [[TulingGameSDKHelper sharedInstance] tlg_registerIAPNotiWithBlock:^(NSString *productID, NSString *price, NSString *sdkUserID) {
         
         //游戏重新向SDK传支付订单参数

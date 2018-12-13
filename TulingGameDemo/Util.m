@@ -18,19 +18,20 @@
      * param gameID       【NSInteger-游戏ID】
      * param cid          【NSInteger渠道ID】
      * param aid          【NSInteger广告位ID】
-     * param gameVersion  【NSString-游戏版本（当前xcodeinfo.plist设置的版本号）】
+     * param gameVersion  【NSString-游戏版本（当前xcode里面info.plist设置的版本号）】
      * param gameKey      【NSString-给游戏分配的KEY】
      */
     
     NSString *gameVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:
-                         @(23),@"gameID",
+                         @(25),@"gameID",
                          @(3),@"cid",
                          @(3),@"aid",
                          gameVersion,@"gameVersion",
-                         @"Ggg18dKOam7Wj6IoMMNdgDE0UmMejKg7",@"gameKey",
+                         @"rdzog9rOvNwMKFP2B9uJqBhaYRhpKFkx",@"gameKey",
                          nil];
+
 
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
@@ -79,15 +80,13 @@
 }
 
 #pragma mark -- 商品ID列表（游戏需要根据自身的匹配相关的信息，开发者账号里面的【税务】方面的填写好，才能正常调用IAP方法），需要同步修改【amountWithProductID】方法
-static NSString * const ReplacingStr = @"com.TulingGame.SDKDemo.pay"; //demo模拟数据，测试使用，用来判断当前商品【单价】
+static NSString * const ReplacingStr = @"com.tuling.demo.pay"; //demo模拟数据，测试使用，用来判断当前商品【单价】
 + (NSString *)productIDInIndex:(NSInteger)index{
     NSArray *array = [[NSArray alloc] initWithObjects:
-                      @"com.TulingGame.SDKDemo.pay6",
-                      @"com.TulingGame.SDKDemo.pay18",
-                      @"com.TulingGame.SDKDemo.pay25",
-                      @"com.TulingGame.SDKDemo.pay40",
-                      @"com.TulingGame.SDKDemo.pay50",
-                      @"com.TulingGame.SDKDemo.pay88",nil];
+                      @"com.tuling.demo.pay6",
+                      @"com.tuling.demo.pay12",
+                      @"com.tuling.demo.pay18",
+                      @"com.tuling.demo.pay25",nil];
     
     if (index < array.count) {
         return array[index];
@@ -121,16 +120,16 @@ static NSString * const ReplacingStr = @"com.TulingGame.SDKDemo.pay"; //demo模�
     
     //（SDK会根据版本号，做开关控制）
     //此处只是为了方便展示功能&测试，所以做了type操作判断，实际出包，请直接用【[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]】设置游戏版本号
-    NSString *appVersion = @"";
+    NSString *gameVersion = @"";
     NSInteger amount;
     NSString *orderId = @"";
     
     if (type == PMTestType_Threeparty) {
-        appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-        amount = 1; //0.01元
+        gameVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; //测试：demo的1.0.0是设置了走三方支付
+        amount = 1; //0.01元（单位：分）
         
     }else{
-        appVersion = @"2.0.0";
+        gameVersion = @"2.0.0"; //测试：demo的2.0.0是设置了走IAP支付
         NSString *price = [self amountWithProductID:productId];
         amount = price.intValue * 100; //单位：分
     }
@@ -143,7 +142,7 @@ static NSString * const ReplacingStr = @"com.TulingGame.SDKDemo.pay"; //demo模�
     }
 
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:
-                         appVersion,@"gameVersion",
+                         gameVersion,@"gameVersion",
                          @(amount),@"amount",
                          orderId,@"orderId",
                          @"3456",@"roleId",

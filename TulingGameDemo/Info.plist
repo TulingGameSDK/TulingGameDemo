@@ -22,20 +22,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>w</string>
+			<string>AP/WP</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>p23.tulinggame.com</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>a</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>p23.tulinggame.com</string>
+				<string>p25.tulinggame.com</string>
 			</array>
 		</dict>
 	</array>
