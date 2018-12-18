@@ -15,15 +15,17 @@
 static const CGFloat kButtonWidth                              = 200.0;
 static const CGFloat kButtonHeigh                              = 35.0;
 static const CGFloat kButtonPadding                            = 13.0;
-static const CGFloat kTotalBtnNum                              = 4;
+static const CGFloat kTotalBtnNum                              = 5;
 
 
 typedef NS_ENUM(NSInteger, ButtonType){
     ButtonType_ChangeAccount  = 0,    // 切换账号
     ButtonType_PM             = 1,    // 支付（SDK自身判断三方还是苹果内购）
     ButtonType_PM_IAP         = 2,    // 支付（SDK自身判断三方还是苹果内购）
-    ButtonType_Logout         = 3,    // 退出游戏
-    ButtonType_Login          = 4,    // 登录
+    ButtonType_Report         = 3,    // 上报
+    ButtonType_Logout         = 4,    // 退出游戏
+    ButtonType_Login          = 5,    // 登录
+
 };
 
 
@@ -133,11 +135,15 @@ typedef NS_ENUM(NSInteger, ButtonType){
         }break;
         case ButtonType_PM:
         {
-            return @"支付";
+            return @"支付（后台开关）";
         }break;
         case ButtonType_PM_IAP:
         {
-            return @"苹果内购（仅供测试）";
+            return @"苹果内购（仅供调试）";
+        }break;
+        case ButtonType_Report:
+        {
+            return @"上报数据";
         }break;
         case ButtonType_Logout:
         {
@@ -189,9 +195,18 @@ typedef NS_ENUM(NSInteger, ButtonType){
         {
             //内购，用于展示【内购】测试功能，实际不接入这个方法
             [self showProductList];
+//            [self setupSDKPMViewWithType:PMTestType_IAP productId:[Util productIDInIndex:0]];
+
             
         }break;
             
+        case ButtonType_Report:
+        {
+            //上报数据
+            [self showReportActiontList];
+            
+        }break;
+
         case ButtonType_Logout:
         {
             //主动登出
@@ -202,6 +217,23 @@ typedef NS_ENUM(NSInteger, ButtonType){
         default:
             break;
     }
+}
+
+-(void)showReportActiontList{
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                  initWithTitle:@"事件上报操作选择"
+                                  delegate:self
+                                  cancelButtonTitle:@"取消"
+                                  destructiveButtonTitle:nil
+                                  otherButtonTitles:
+                                  [Util reportActionInIndex:TLGGameRoleEventType_EneterServer],
+                                  [Util reportActionInIndex:TLGGameRoleEventType_CreateRole],
+                                  [Util reportActionInIndex:TLGGameRoleEventType_UpgradeRoleLevel],
+                                  [Util reportActionInIndex:TLGGameRoleEventType_QuitServer],nil];
+    actionSheet.actionSheetStyle = UIBarStyleDefault;
+    [actionSheet showInView:self.view];
+    actionSheet.tag = 1;
 }
 
 -(void)showProductList{
@@ -218,18 +250,28 @@ typedef NS_ENUM(NSInteger, ButtonType){
                                   [Util productIDInIndex:3],nil];
     actionSheet.actionSheetStyle = UIBarStyleDefault;
     [actionSheet showInView:self.view];
+    actionSheet.tag = 2;
 }
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     
-    if (buttonIndex <= 3) {
-        //选择完，调起IAP支付
-        [self setupSDKPMViewWithType:PMTestType_IAP productId:[Util productIDInIndex:buttonIndex]];
+    if (actionSheet.tag == 1) {
+        //事件上报
+        [[SDKSingleObject sharedInstance] sdkRoleReportType:buttonIndex];
         
-    }else{
-        
-    }
+    }else if (actionSheet.tag == 2){
+        //商品选择
+        if (buttonIndex <= 3) {
+            //选择完，调起IAP支付
+            [self setupSDKPMViewWithType:PMTestType_IAP productId:[Util productIDInIndex:buttonIndex]];
+            
+        }else{
+            
+        }
 
+    }else{}
+    
+    [actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 }
 
 

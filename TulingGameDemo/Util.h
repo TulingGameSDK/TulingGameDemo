@@ -30,6 +30,9 @@ typedef NS_ENUM(NSInteger, PMTestType){
 //IAP商品
 + (NSString *)productIDInIndex:(NSInteger)index;
 
+//游戏事件类型
++ (NSString *)reportActionInIndex:(NSInteger)index;
+
 
 @end
 

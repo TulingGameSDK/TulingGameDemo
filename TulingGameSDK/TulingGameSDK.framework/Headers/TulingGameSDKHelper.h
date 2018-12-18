@@ -26,8 +26,8 @@ typedef void(^TLGLoginStatusBlcok)(BOOL isSuccess,id errorMsg,NSString *sdkUserI
 //是否成功登出
 typedef void(^TLGLogoutStatusBlock)(BOOL isSuccessLogout);
 
-//角色上报
-typedef void(^TLGRoleReportStatusBlcok)(BOOL isSuccess,id errorMsg);
+//事件上报
+typedef void(^TLGRoleReportStatusBlcok)(BOOL isSuccess,id errorMsg,TLGGameRoleEventType evenType);
 
 /*! @brief 请求游戏订单
  *
@@ -165,7 +165,7 @@ typedef void(^TLGPMStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameOrderI
  */
 -(void)tlg_requestIAPOrderSupportCheckAfterEnterGameServer;
 
-#pragma mark -- 【IAP】停用IAPd补单措施
+#pragma mark -- 【IAP】停用IAP补单措施(未开放使用)
 /*! @brief 用户在游戏内，退出了服务器，但是没有退出登录的,单单退出了当前【区服】，需要调用本方法，去除IAP补单措施，再重新进入【区服】的时候，重新调用tlg_requestIAPOrderSupportCheckAfterEnterGameServer初始化补单一次
  *
  */

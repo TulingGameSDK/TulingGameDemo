@@ -81,13 +81,15 @@
          };
          */
         
-        [[TulingGameSDKHelper sharedInstance] tlg_reportGameRoleWithJsonString:[Util gameRoleValueJaosnString] eventType:TLGGameRoleEventType_EneterServer block:^(BOOL isSuccess, id errorMsg) {
-            NSLog(@"\n\n【图灵SDK角色上传，统一回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\n\n",isSuccess,errorMsg);
+        [[TulingGameSDKHelper sharedInstance] tlg_reportGameRoleWithJsonString:[Util gameRoleValueJaosnString] eventType:type block:^(BOOL isSuccess,id errorMsg,TLGGameRoleEventType evenType) {
+            NSLog(@"\n\n【图灵SDK事件上报，统一回调结果：】\n\nisSuccess:%d\nerrorMsg:%@\n上报类型：%@\n",isSuccess,errorMsg,[Util reportActionInIndex:evenType]);
             
-            if (type == TLGGameRoleEventType_EneterServer) {
+            if (evenType == TLGGameRoleEventType_EneterServer) {
                 //进入服务器之后，才调用补单操作（此处做调用举例展示，实际接入游戏，请按相关位置调用处理）
                 [[TulingGameSDKHelper sharedInstance] tlg_requestIAPOrderSupportCheckAfterEnterGameServer];
             }
+            
+            
             
         }];
         
@@ -149,6 +151,9 @@
     //SDK本身会根据游戏的版本号，做后台开关，控制支付方式
     //此处type只为方便展示&测试内容，（SDKDemo本身app version设置了0.0.1是走三方，如果设置了1.0.0就走内购）
 
+    
+    NSLog(@"\n\n选中了商品：\n%@\n\n",productId);
+    
     //游戏需要组装参数，向SDK传支付相关的参数
     NSString *gameValueJson = [Util gamePMOrderValueJaosnStringWithType:type productId:productId];
     

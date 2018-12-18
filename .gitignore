@@ -2,3 +2,6 @@ TulingGameDemo.xcodeproj/project.xcworkspace/
 TulingGameDemo.xcodeproj/xcuserdata/
 Build/
 .DS_Store
+Archive.sh
+ExportPlist/
+IPADirection/

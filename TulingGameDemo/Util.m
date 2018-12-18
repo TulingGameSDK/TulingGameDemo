@@ -79,6 +79,23 @@
     
 }
 
+#pragma mark -- 事件上报【进入服务器、创建角色、角色升级、退出服务器】
++ (NSString *)reportActionInIndex:(NSInteger)index{
+    NSArray *array = [[NSArray alloc] initWithObjects:
+                      @"进入游戏区服（开启IAP）",
+                      @"创建角色",
+                      @"角色升级",
+                      @"退出游戏区服（退出IAP）",nil];
+    
+    if (index < array.count) {
+        return array[index];
+    }else{
+        return array[0];
+    }
+}
+
+
+
 #pragma mark -- 商品ID列表（游戏需要根据自身的匹配相关的信息，开发者账号里面的【税务】方面的填写好，才能正常调用IAP方法），需要同步修改【amountWithProductID】方法
 static NSString * const ReplacingStr = @"com.tuling.demo.pay"; //demo模拟数据，测试使用，用来判断当前商品【单价】
 + (NSString *)productIDInIndex:(NSInteger)index{
