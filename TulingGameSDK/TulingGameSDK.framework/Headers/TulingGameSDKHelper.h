@@ -66,6 +66,8 @@ typedef void(^TLGPMStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameOrderI
  */
 + (instancetype)sharedInstance;
 
+#pragma mark ************************* 登录部分 *************************
+
 #pragma mark -- 登录
 /** 登录初始化 **/
 /*! @brief 游戏传参（5个组成组成参数，需要NSDictionary转成一条json string传给SDK）
@@ -100,6 +102,22 @@ typedef void(^TLGPMStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameOrderI
  *
  */
 -(void)tlg_reportGameLogoutWithBlock:(TLGLogoutStatusBlock)block;
+
+
+#pragma mark ************************* 支付部分 *************************
+
+#pragma mark -- 支*结果统一回调（三方+IAP）
+/*! @brief 支付结果统一回调（三方+IAP）
+ *
+ */
+-(void)tlg_PMCallBack:(TLGPMStatusBlock)block;
+
+
+#pragma mark -- 【IAP】注册IAP状态监听
+/*! @brief 注册全局的IAP操作监听(含丢单处理逻辑)
+ *
+ */
+-(void)tlg_registerIAPNoti;
 
 
 #pragma mark -- 发起支付（三方+IAP）
@@ -138,38 +156,7 @@ typedef void(^TLGPMStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameOrderI
 -(BOOL)tlg_handleOpenURL:(NSURL *) url;
 
 
-#pragma mark -- 支*结果统一回调（三方+IAP）
-/*! @brief 支付结果统一回调（三方+IAP）
- *
- */
--(void)tlg_PMCallBack:(TLGPMStatusBlock)block;
 
-
-#pragma mark -- 【IAP】注册IAP状态监听
-/*! @brief 注册全局的IAP操作监听(含丢单处理逻辑)
- *
- */
--(void)tlg_registerIAPNotiWithBlock:(TLGGameOrderParamRequestBlcok)block;
-
-#pragma mark -- 【IAP】内购凭证有效，IAP绑定游戏订单数据
-/*! @brief 支付操作-针对IAP掉单处理(SDK根据游戏的版本号，出不同的支付操作)
- *
- * param gameOrderJson;          //订单信息
- */
--(void)tlg_requestIAPWithGameOrderJson:(NSString *)gameOrderJson;
-
-
-#pragma mark -- 【IAP】启用IAPd补单措施
-/*! @brief IAP防丢单初始化操作（在拿到全部的角色信息之后，正式【进入服务器】后调用，启动补单操作）
- *
- */
--(void)tlg_requestIAPOrderSupportCheckAfterEnterGameServer;
-
-#pragma mark -- 【IAP】停用IAP补单措施(未开放使用)
-/*! @brief 用户在游戏内，退出了服务器，但是没有退出登录的,单单退出了当前【区服】，需要调用本方法，去除IAP补单措施，再重新进入【区服】的时候，重新调用tlg_requestIAPOrderSupportCheckAfterEnterGameServer初始化补单一次
- *
- */
-//-(void)tlg_reportIAPOrderSupportCloseAfterQuitGameServer;
 
 
 @end

@@ -32,7 +32,6 @@
                          @"rdzog9rOvNwMKFP2B9uJqBhaYRhpKFkx",@"gameKey",
                          nil];
 
-
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
@@ -104,13 +103,14 @@ static NSString * const ReplacingStr = @"com.tuling.demo.pay"; //demo模拟数�
                       @"com.tuling.demo.pay12",
                       @"com.tuling.demo.pay18",
                       @"com.tuling.demo.pay25",nil];
-    
+
     if (index < array.count) {
         return array[index];
     }else{
         return array[0];
     }
 }
+
 
 
 #pragma mark -- 游戏预订单生成，传参
@@ -171,9 +171,10 @@ static NSString * const ReplacingStr = @"com.tuling.demo.pay"; //demo模拟数�
                          @"游戏钻石",@"productName",
                          @"充值100金币-10元",@"payInfo",
                          @"1",@"productCount",
-                         @"https://www.baidu.com",@"notifyUrl",
+                         @"https://u.tulinggame.com",@"notifyUrl",
                          @"这是一条测试订单",@"extraData",
                          nil];
+
     
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil];
     
