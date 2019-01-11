@@ -51,6 +51,9 @@
             NSLog(@"\n\n\n\nTulingGameDemo-Block回调-登录成功");
             NSLog(@"\n\n登录成功-Block回调数据\nuserId：%@\ntoken:%@",sdkUserID,sdkToken);
             
+            //登录成功之后，【进入游戏区服】的上报【必须调用】，成功之后，才能正式开启IAP苹果内购功能
+            [self sdkRoleReportType:TLGGameRoleEventType_EneterServer];
+            
             //单例读取SDK本地的userid、token方法（此处做调用举例展示，实际接入游戏，按需调整）
             if ([TulingGameSDKHelper sharedInstance].isLogin) {
                 NSLog(@"\n\n登录成功-SDK本地存储数据读取方法\nuserId：%@\ntoken:%@",[TulingGameSDKHelper sharedInstance].sdkUserId,[TulingGameSDKHelper sharedInstance].sdkToken);
@@ -58,9 +61,6 @@
             
             //更新UI显示（此处做调用举例展示，实际接入游戏，游戏代码自己控制界面更新）
             [self postLoginStatusWithLoginStatus:isSuccess];
-            
-            //角色上传（此处做调用举例展示，实际接入游戏，请按相关位置调用处理）
-            [self sdkRoleReportType:TLGGameRoleEventType_EneterServer];
             
         }else{
             
@@ -76,7 +76,7 @@
         //【创建角色、进入服务器、角色升级、退出服务器】4种情况，需要调用上报API
         /*! @brief 上报类型
          typedef NS_ENUM(NSInteger,TLGGameRoleEventType){
-         TLGGameRoleEventType_EneterServer         = 0,        // 进入服务器
+         TLGGameRoleEventType_EneterServer         = 0,        // 进入游戏区服
          TLGGameRoleEventType_CreateRole           = 1,        // 创建角色
          TLGGameRoleEventType_UpgradeRoleLevel     = 2,         // 角色升级
          TLGGameRoleEventType_QuitServer           = 3         // 退出服务器
@@ -149,8 +149,8 @@
     
     //支付结果回调（IAP+三方）
     [[TulingGameSDKHelper sharedInstance] tlg_PMCallBack:^(BOOL isSuccess, id errorMsg, NSString *gameOrderID) {
-        //支付结果(苹果内购-丢单部分重新下单)
         NSLog(@"\n\n【图灵SDK支付，统一回调结果：】\nisSuccess:%d\nerrorMsg:%@\ngameOrderID:%@\n\n",isSuccess,errorMsg,gameOrderID);
+        
     }];
     
 }

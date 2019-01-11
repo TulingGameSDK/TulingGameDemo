@@ -80,7 +80,7 @@ typedef void(^TLGPMStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameOrderI
  */
 -(void)tlg_requestLoginWithGameInitJson:(NSString *)GameInitJson block:(TLGLoginStatusBlcok)block;
 
-#pragma mark -- 操作上报【进入服务器、创建角色、角色升级、退出服务器】
+#pragma mark -- 操作上报【进入游戏区服、创建角色、角色升级、退出服务器】
 /*! @brief 创建角色上报【创建角色成功后调用】
  *
  * param serverId;              //【必传】【NSString】区服id
@@ -90,7 +90,7 @@ typedef void(^TLGPMStatusBlock)(BOOL isSuccess,id errorMsg, NSString *gameOrderI
  * param roleLevel;             //【必传】【NSString】角色等级
  * param vipLevel;              //【必传】【NSString】VIP等级
  * param balance;               //【必传】【CGFloat】玩家游戏币总额， 如 100 金币
- * param partyName;             //【必传】【NSString】帮派，公会名称。 若无，填 unknown
+ * param partyName;             //【选传】【NSString】帮派，公会名称
  * param roleCreatedTime;       //【必传】【NSInteger】角色创建的时间戳，单位：秒
  * param roleLevelUpgradedTime; //【必传】【NSInteger】角色升级的时间戳，单位：秒
  */

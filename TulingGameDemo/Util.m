@@ -32,6 +32,7 @@
                          @"rdzog9rOvNwMKFP2B9uJqBhaYRhpKFkx",@"gameKey",
                          nil];
 
+
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
@@ -65,7 +66,7 @@
                          @"10",@"roleLevel",
                          @"3",@"vipLevel",
                          @(10000),@"balance",
-                         @"图灵公会",@"partyName",
+                         @"unknown",@"partyName",
                          @(1539571500),@"roleCreatedTime",
                          @(1539572950),@"roleLevelUpgradedTime",
                          nil];
@@ -103,7 +104,7 @@ static NSString * const ReplacingStr = @"com.tuling.demo.pay"; //demo模拟数�
                       @"com.tuling.demo.pay12",
                       @"com.tuling.demo.pay18",
                       @"com.tuling.demo.pay25",nil];
-
+    
     if (index < array.count) {
         return array[index];
     }else{
