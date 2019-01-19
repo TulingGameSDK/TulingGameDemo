@@ -30,6 +30,7 @@
                          @(3),@"aid",
                          gameVersion,@"gameVersion",
                          @"rdzog9rOvNwMKFP2B9uJqBhaYRhpKFkx",@"gameKey",
+                         @"cfHcVw2v+oBu1nWkqqJ3v8OpxddbKI8nVxZGpj3XEnZwPUAjfIBkWmCHruUXFv+YYbb/Pn+/ErewVjdmX+tjXL//77qe3+ID2I+hwYIpKe6DzOTKKH1AkQDYyyEZXrBaF9Hef0KyH04AAJU2nSX8rC0/OrgJjeaPbjbSs/Ue32U=",@"gameKey2",
                          nil];
 
 
