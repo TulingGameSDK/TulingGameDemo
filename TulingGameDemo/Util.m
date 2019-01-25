@@ -29,10 +29,9 @@
                          @(3),@"cid",
                          @(3),@"aid",
                          gameVersion,@"gameVersion",
-                         @"rdzog9rOvNwMKFP2B9uJqBhaYRhpKFkx",@"gameKey",
-                         @"cfHcVw2v+oBu1nWkqqJ3v8OpxddbKI8nVxZGpj3XEnZwPUAjfIBkWmCHruUXFv+YYbb/Pn+/ErewVjdmX+tjXL//77qe3+ID2I+hwYIpKe6DzOTKKH1AkQDYyyEZXrBaF9Hef0KyH04AAJU2nSX8rC0/OrgJjeaPbjbSs/Ue32U=",@"gameKey2",
+                         @"8z1obDYGUELDjQ8gSpQrvyAvhavSM0vG",@"gameKey",
+                         @"tEyiyeA2y5yDB1ZUm0k4Alt9LoMyguOBN1V6BHBpBXjefmhIvPn06mznKZaezN8ZHcZ7LyIArRXVgRsRmU+1xN4bEjII/A7izKF2VORzDuuC/aQmalCYfmx4y98/szcaFkY88fIPbG+vA7/5nrzd8IC6kHMWtkCYpiv8jnoIXtw=",@"gameKey2",
                          nil];
-
 
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
